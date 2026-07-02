@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhumi Studio | Premium Photography & Videography</title>
+    <!-- Google Fonts: Outfit for body, Playfair Display for headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" id="nav-logo-btn">
+                <span class="gold-text">BHUMI</span> STUDIO
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#" class="nav-link active" data-target="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-target="services">Services</a></li>
+                <li><a href="#" class="nav-link" data-target="portfolio">Portfolio</a></li>
+                <li><a href="#" class="nav-link" data-target="booking">Book Online</a></li>
+                <li><a href="#" class="nav-link" data-target="contact">Contact Us</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <div class="user-menu-container">
+                    <button class="btn btn-outline nav-portal-btn" id="user-portal-btn">
+                        <i class="fa-regular fa-user"></i> <span id="portal-btn-text">Client Portal</span>
+                    </button>
+                    <div class="user-dropdown" id="user-dropdown-menu">
+                        <div class="dropdown-header">
+                            <h4 id="dropdown-user-name">Guest</h4>
+                            <p id="dropdown-user-email">Sign in to book shoots</p>
+                        </div>
+                        <hr>
+                        <a href="#" class="dropdown-item" id="dropdown-dashboard-link" data-target="dashboard">
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
+                        </a>
+                        <a href="#" class="dropdown-item admin-only" id="dropdown-admin-link" data-target="admin">
+                            <i class="fa-solid fa-user-shield"></i> Admin Panel
+                        </a>
+                        <hr>
+                        <button class="dropdown-item text-danger" id="logout-btn">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </button>
+                    </div>
+                </div>
+                <button class="hamburger-menu" id="hamburger-btn" aria-label="Open Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- App Views Container (SPA) -->
+    <div id="view-container">
+        
+        <!-- ================= HOME VIEW ================= -->
+        <section id="home-view" class="app-view active">
+            <!-- Hero Video Banner -->
+            <div class="hero-section">
+                <div class="hero-video-bg">
+                    <div class="video-overlay"></div>
+                    <video autoplay loop muted playsinline id="hero-video">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-young-couple-walking-in-a-forest-43223-large.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="hero-content">
+                    <span class="hero-subtitle">PREMIUM WEDDING & CINEMATIC PRODUCTION</span>
+                    <h1 class="hero-title">Capturing Your <br><span class="gold-text-glow">Timeless Stories</span></h1>
+                    <p class="hero-description">Professional luxury photography, cinematic shoots, event coverage, and high-end video post-production tailored for unforgettable moments.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="app.navigateTo('booking')">
+                            Book Now <i class="fa-solid fa-calendar-days"></i>
+                        </button>
+                        <button class="btn btn-outline modal-trigger" data-modal="quote-modal">
+                            Get a Quote <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </button>
+                        <button class="btn btn-glass" onclick="app.navigateTo('contact')">
+                            Contact Us <i class="fa-solid fa-envelope"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="scroll-indicator">
+                    <span>Explore More</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <!-- Studio Stats / Introduction -->
+            <div class="section container">
+                <div class="intro-grid">
+                    <div class="intro-text-block">
+                        <span class="tagline">ABOUT BHUMI STUDIO</span>
+                        <h2 class="section-title text-left">Where Passion <br>Meets Professionalism</h2>
+                        <p class="paragraph">Bhumi Studio is a premier luxury media production collective specializing in wedding films, commercial photography, drone videography, and sophisticated post-production. With over a decade of visual excellence, we turn fleeting sentiments into archival pieces of art.</p>
+                        <p class="paragraph">We combine state-of-the-art cinematic gear (4K/8K cameras, professional audio, stable aerial drone systems) with custom grading techniques to craft bespoke, cinema-level memories.</p>
+                        <button class="btn btn-outline" onclick="app.navigateTo('contact')">Learn More About Us</button>
+                    </div>
+                    <div class="intro-stats-block">
+                        <div class="stat-card">
+                            <h3>500+</h3>
+                            <p>Weddings Captured</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>250+</h3>
+                            <p>Corporate Clients</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>10+</h3>
+                            <p>Years of Artistry</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>99%</h3>
+                            <p>Client Satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offers & Banner Slideshow -->
+            <div class="offers-banner-section" id="home-offers-section" style="display:none;">
+                <div class="container">
+                    <span class="tagline text-center text-gold">EXCLUSIVE PROMOTIONS</span>
+                    <h2 class="section-title text-center">Seasonal Offers</h2>
+                    <div class="offers-carousel" id="offers-carousel-container">
+                        <!-- Offers will be injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Services -->
+            <div class="section container bg-soft-glow">
+                <span class="tagline text-center">OUR SPECIALITIES</span>
+                <h2 class="section-title text-center">Featured Services</h2>
+                <div class="featured-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-ring"></i></div>
+                        <h3>Wedding Photography & Films</h3>
+                        <p>Cinematic narratives capturing the raw emotions, vows, and grandeur of your wedding journey.</p>
+                        <a href="#" class="learn-more" onclick="app.navigateTo('services')">View Details <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-clapperboard"></i></div>
+                        <h3>Cinematic Video Production</h3>
+                        <p>High-end corporate, commercial, music videos, and cinematic advertisement films shot in ultra HD.</p>
+                        <a href="#" class="learn-more" onclick="app.navigateTo('services')">View Details <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-helicopter"></i></div>
+                        <h3>Drone Videography</h3>
+                        <p>Spectacular, FAA-compliant aerial documentation adding grand scale viewpoints to events and commercials.</p>
+                        <a href="#" class="learn-more" onclick="app.navigateTo('services')">View Details <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary" onclick="app.navigateTo('services')">Explore All Services</button>
+                </div>
+            </div>
+
+            <!-- Portfolio Highlights Grid -->
+            <div class="section container">
+                <span class="tagline text-center">GALLERY PREVIEW</span>
+                <h2 class="section-title text-center">Portfolio Highlights</h2>
+                <div class="portfolio-highlights-grid" id="portfolio-highlights-container">
+                    <!-- Dynamic rendering -->
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline" onclick="app.navigateTo('portfolio')">View Full Gallery</button>
+                </div>
+            </div>
+
+            <!-- Testimonials Slider -->
+            <div class="section bg-card-dark">
+                <div class="container">
+                    <span class="tagline text-center">TESTIMONIALS</span>
+                    <h2 class="section-title text-center">What Our Clients Say</h2>
+                    <div class="testimonials-slider" id="testimonials-container">
+                        <!-- Dynamic Testimonials -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google Reviews Integration Callout -->
+            <div class="section container text-center">
+                <div class="google-callout-box">
+                    <div class="callout-stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <h3>Rated 4.9/5 stars on Google Reviews</h3>
+                    <p>Read what our happy clients say about our visual execution on Google.</p>
+                    <a href="https://google.com" target="_blank" class="btn btn-outline mt-2"><i class="fa-brands fa-google"></i> Read Google Reviews</a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= SERVICES VIEW ================= -->
+        <section id="services-view" class="app-view">
+            <div class="page-header container">
+                <h1>Our Professional Services</h1>
+                <p>Browse our extensive list of photography, videography, and post-production solutions. Select a service to initiate booking.</p>
+            </div>
+            
+            <div class="container">
+                <div class="services-list-grid" id="services-list-container">
+                    <!-- Injected via services JS -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PORTFOLIO VIEW ================= -->
+        <section id="portfolio-view" class="app-view">
+            <div class="page-header container">
+                <h1>Portfolio Gallery</h1>
+                <p>A curated compilation of our professional captures and cinematic productions. Filter by category to view our expertise.</p>
+            </div>
+            
+            <div class="container">
+                <!-- Gallery filters -->
+                <div class="portfolio-filters" id="portfolio-filters-tabs">
+                    <button class="filter-tab active" data-filter="all">All Works</button>
+                    <button class="filter-tab" data-filter="wedding">Weddings</button>
+                    <button class="filter-tab" data-filter="pre-wedding">Pre-Wedding</button>
+                    <button class="filter-tab" data-filter="maternity">Maternity</button>
+                    <button class="filter-tab" data-filter="baby">Baby Shoots</button>
+                    <button class="filter-tab" data-filter="event">Events</button>
+                    <button class="filter-tab" data-filter="drone">Drone Shoots</button>
+                    <button class="filter-tab" data-filter="product">Commercials</button>
+                </div>
+
+                <!-- Gallery items -->
+                <div class="portfolio-gallery-grid" id="portfolio-gallery-container">
+                    <!-- Dynamic rendering of image/video content -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= ONLINE BOOKING VIEW ================= -->
+        <section id="booking-view" class="app-view">
+            <div class="page-header container">
+                <h1>Book Your Session</h1>
+                <p>Reserve a date for your visual session. Follow the interactive step-by-step assistant below.</p>
+            </div>
+            
+            <div class="container max-width-md">
+                <!-- Booking Tracking System -->
+                <div class="booking-track-box card mb-4">
+                    <h3>Already Booked? Track Status</h3>
+                    <div class="flex-input-row">
+                        <input type="text" id="track-booking-id" placeholder="Enter Booking ID (e.g. fd43-41ea...)">
+                        <button class="btn btn-outline" id="track-booking-btn">Track Status</button>
+                    </div>
+                    <div id="booking-track-result" class="track-result-container hidden">
+                        <!-- Tracking info injected here -->
+                    </div>
+                </div>
+
+                <!-- Booking Step Wizard -->
+                <div class="booking-wizard-card card">
+                    <div class="wizard-steps-header">
+                        <div class="step-indicator active" id="indicator-step-1">1<span>Service</span></div>
+                        <div class="step-indicator" id="indicator-step-2">2<span>Package</span></div>
+                        <div class="step-indicator" id="indicator-step-3">3<span>Details</span></div>
+                        <div class="step-indicator" id="indicator-step-4">4<span>Confirm</span></div>
+                    </div>
+                    
+                    <form id="booking-form" onsubmit="event.preventDefault();">
+                        
+                        <!-- Step 1: Select Service & Date -->
+                        <div class="wizard-step-panel active" id="panel-step-1">
+                            <h3>Choose Service & Date</h3>
+                            <div class="form-group">
+                                <label for="booking-service">Select Service</label>
+                                <select id="booking-service" class="form-control" required>
+                                    <option value="" disabled selected>-- Select a Service --</option>
+                                    <option value="Wedding Photography">Wedding Photography</option>
+                                    <option value="Wedding Videography">Wedding Videography</option>
+                                    <option value="Pre-Wedding Shoot">Pre-Wedding Shoots</option>
+                                    <option value="Maternity Shoot">Maternity Shoots</option>
+                                    <option value="Baby Shoot">Baby Shoots</option>
+                                    <option value="Birthday Events">Birthday Events</option>
+                                    <option value="Corporate Events">Corporate Events</option>
+                                    <option value="Product Photography">Product Photography</option>
+                                    <option value="Drone Shoots">Drone Shoots</option>
+                                    <option value="Cinematic Video Production">Cinematic Video Production</option>
+                                    <option value="Video Editing & Mixing">Video Editing & Mixing</option>
+                                    <option value="Album Designing">Album Designing</option>
+                                    <option value="Live Streaming Services">Live Streaming Services</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="booking-date">Event Date</label>
+                                    <input type="date" id="booking-date" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="booking-time">Preferred Start Time</label>
+                                    <input type="time" id="booking-time" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="wizard-buttons">
+                                <span></span>
+                                <button type="button" class="btn btn-primary" id="wizard-next-1">Choose Package <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Choose Package -->
+                        <div class="wizard-step-panel" id="panel-step-2">
+                            <h3>Choose Package Tiers</h3>
+                            <p class="mb-3 text-gold" id="selected-service-label">Service: None selected</p>
+                            
+                            <div class="package-tiers-container" id="package-options-grid">
+                                <!-- Dynamically generated radio cards -->
+                            </div>
+                            
+                            <div class="wizard-buttons">
+                                <button type="button" class="btn btn-outline" id="wizard-prev-2"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn btn-primary" id="wizard-next-2">Enter Details <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Personal Details & Upload Reference -->
+                        <div class="wizard-step-panel" id="panel-step-3">
+                            <h3>Personal Information</h3>
+                            <div class="form-group">
+                                <label for="booking-client-name">Your Full Name</label>
+                                <input type="text" id="booking-client-name" class="form-control" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="booking-client-email">Email Address</label>
+                                    <input type="email" id="booking-client-email" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="booking-client-phone">Phone Number</label>
+                                    <input type="tel" id="booking-client-phone" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-requirements">Special Requirements / Concept Notes (Optional)</label>
+                                <textarea id="booking-requirements" class="form-control" rows="3" placeholder="Tell us about the location parameters, visual style preferences, etc."></textarea>
+                            </div>
+                            
+                            <!-- Reference Image upload -->
+                            <div class="form-group">
+                                <label for="booking-reference-image">Upload Reference Concept / Design (Optional)</label>
+                                <input type="file" id="booking-reference-image" class="form-control-file" accept="image/*">
+                                <p class="help-text">Max file size: 5MB. Accepts JPEG, PNG</p>
+                                <div id="booking-ref-preview" class="upload-preview hidden">
+                                    <img src="" id="booking-ref-img-tag" alt="Reference Preview">
+                                    <button type="button" class="btn-remove-img" id="btn-remove-ref-img"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="wizard-buttons">
+                                <button type="button" class="btn btn-outline" id="wizard-prev-3"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn btn-primary" id="wizard-next-3">Confirm Details <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Final Summary -->
+                        <div class="wizard-step-panel" id="panel-step-4">
+                            <h3>Confirm Your Booking</h3>
+                            <div class="booking-summary-box">
+                                <table class="table summary-table">
+                                    <tr><td><strong>Service</strong></td><td id="summary-service">-</td></tr>
+                                    <tr><td><strong>Event Date</strong></td><td id="summary-date">-</td></tr>
+                                    <tr><td><strong>Start Time</strong></td><td id="summary-time">-</td></tr>
+                                    <tr><td><strong>Selected Package</strong></td><td id="summary-package">-</td></tr>
+                                    <tr><td><strong>Estimated Price</strong></td><td class="text-gold bold" id="summary-price">-</td></tr>
+                                    <tr><td><strong>Client Name</strong></td><td id="summary-client-name">-</td></tr>
+                                    <tr><td><strong>Email</strong></td><td id="summary-client-email">-</td></tr>
+                                    <tr><td><strong>Phone</strong></td><td id="summary-client-phone">-</td></tr>
+                                </table>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3">
+                                <i class="fa-solid fa-circle-info"></i> Upon clicking Submit, your booking will be created in "Pending" status. Our team will review the timeline and contact you on WhatsApp/Phone to lock in confirmation details.
+                            </div>
+                            
+                            <div class="wizard-buttons">
+                                <button type="button" class="btn btn-outline" id="wizard-prev-4"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn btn-success" id="wizard-submit-btn">Submit Booking <i class="fa-solid fa-circle-check"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= CUSTOMER DASHBOARD VIEW ================= -->
+        <section id="dashboard-view" class="app-view">
+            <div class="page-header container">
+                <h1>Customer Dashboard</h1>
+                <p>Manage your visual history, track bookings, and update profile settings.</p>
+            </div>
+            
+            <div class="container">
+                <div class="dashboard-grid">
+                    <!-- Dashboard Sidebar -->
+                    <div class="dashboard-sidebar card">
+                        <div class="client-profile-header">
+                            <div class="avatar-large"><i class="fa-solid fa-user-tie"></i></div>
+                            <h3 id="dash-profile-name">Client Name</h3>
+                            <p id="dash-profile-email">email@gmail.com</p>
+                            <span class="badge badge-gold mt-1">Valued Client</span>
+                        </div>
+                        <hr>
+                        <div class="dash-menu">
+                            <button class="dash-tab-btn active" data-tab="dash-bookings"><i class="fa-solid fa-camera"></i> Bookings & History</button>
+                            <button class="dash-tab-btn" data-tab="dash-profile"><i class="fa-solid fa-user-gear"></i> Edit Profile</button>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Main Content -->
+                    <div class="dashboard-main-content">
+                        <!-- Bookings Tab -->
+                        <div class="dash-tab-panel active" id="dash-bookings">
+                            <div class="panel-header mb-3">
+                                <h2>Your Bookings</h2>
+                            </div>
+                            <div id="dash-bookings-list-container">
+                                <!-- Bookings will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Profile Editing Tab -->
+                        <div class="dash-tab-panel" id="dash-profile">
+                            <div class="panel-header mb-3">
+                                <h2>Update Profile Details</h2>
+                            </div>
+                            <div class="card">
+                                <form id="dash-profile-form">
+                                    <div class="form-group">
+                                        <label for="dash-input-name">Full Name</label>
+                                        <input type="text" id="dash-input-name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dash-input-phone">Phone Number</label>
+                                        <input type="tel" id="dash-input-phone" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        <input type="email" id="dash-input-email" class="form-control" disabled>
+                                        <p class="help-text">Email address cannot be changed.</p>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= ADMIN PANEL VIEW ================= -->
+        <section id="admin-view" class="app-view">
+            <div class="page-header container">
+                <h1>Admin Control Center</h1>
+                <p>Welcome back, Administrator. Manage inquiries, update visual catalogs, and adjust parameters.</p>
+            </div>
+            
+            <div class="container">
+                <div class="admin-panel-tabs">
+                    <button class="admin-tab-btn active" data-tab="admin-analytics"><i class="fa-solid fa-chart-line"></i> Analytics</button>
+                    <button class="admin-tab-btn" data-tab="admin-bookings"><i class="fa-solid fa-calendar-check"></i> Bookings</button>
+                    <button class="admin-tab-btn" data-tab="admin-enquiries"><i class="fa-solid fa-envelope-open-text"></i> Enquiries</button>
+                    <button class="admin-tab-btn" data-tab="admin-portfolio"><i class="fa-solid fa-images"></i> Manage Portfolio</button>
+                    <button class="admin-tab-btn" data-tab="admin-offers"><i class="fa-solid fa-tags"></i> Coupons & Offers</button>
+                    <button class="admin-tab-btn" data-tab="admin-settings"><i class="fa-solid fa-sliders"></i> Site Settings</button>
+                </div>
+
+                <div class="admin-tab-content">
+                    
+                    <!-- ADMIN ANALYTICS PANEL -->
+                    <div class="admin-tab-panel active" id="admin-analytics">
+                        <div class="stats-overview-grid">
+                            <div class="stat-card border-gold">
+                                <div class="stat-icon"><i class="fa-solid fa-circle-check text-gold"></i></div>
+                                <div>
+                                    <p class="stat-lbl">Total Bookings</p>
+                                    <h3 id="stat-total-bookings">0</h3>
+                                </div>
+                            </div>
+                            <div class="stat-card border-gold">
+                                <div class="stat-icon"><i class="fa-solid fa-wallet text-gold"></i></div>
+                                <div>
+                                    <p class="stat-lbl">Confirmed Revenue</p>
+                                    <h3 id="stat-total-revenue">₹0</h3>
+                                </div>
+                            </div>
+                            <div class="stat-card border-gold">
+                                <div class="stat-icon"><i class="fa-solid fa-message text-gold"></i></div>
+                                <div>
+                                    <p class="stat-lbl">Enquiries Received</p>
+                                    <h3 id="stat-total-enquiries">0</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Graphical charts section (pure SVG layouts) -->
+                        <div class="charts-row">
+                            <div class="chart-box card">
+                                <h3>Revenue Trends (Last 6 Months)</h3>
+                                <div class="svg-chart-container" id="revenue-chart-wrapper">
+                                    <!-- Dynamic SVG graph injected -->
+                                </div>
+                            </div>
+                            <div class="chart-box card">
+                                <h3>Popular Services Share</h3>
+                                <div class="svg-chart-container" id="popularity-chart-wrapper">
+                                    <!-- Dynamic SVG pie chart injected -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN BOOKINGS PANEL -->
+                    <div class="admin-tab-panel" id="admin-bookings">
+                        <div class="flex-row-between mb-3">
+                            <h2>Manage Bookings</h2>
+                            <div class="table-actions">
+                                <input type="text" id="admin-booking-search" placeholder="Search bookings..." class="form-control-sm">
+                                <button class="btn btn-outline-sm" id="btn-export-bookings"><i class="fa-solid fa-file-excel"></i> Export CSV</button>
+                            </div>
+                        </div>
+                        <div class="responsive-table-holder">
+                            <table class="table admin-table" id="admin-bookings-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID / Date</th>
+                                        <th>Customer</th>
+                                        <th>Service & Package</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic elements -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN ENQUIRIES PANEL -->
+                    <div class="admin-tab-panel" id="admin-enquiries">
+                        <div class="flex-row-between mb-3">
+                            <h2>Customer Enquiry Inbox</h2>
+                            <button class="btn btn-outline-sm" id="btn-export-enquiries"><i class="fa-solid fa-file-excel"></i> Export CSV</button>
+                        </div>
+                        <div class="responsive-table-holder">
+                            <table class="table admin-table" id="admin-enquiries-table">
+                                <thead>
+                                    <tr>
+                                        <th>Submit Date</th>
+                                        <th>Client</th>
+                                        <th>Subject</th>
+                                        <th>Status</th>
+                                        <th>Response / Notes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic elements -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN PORTFOLIO PANEL -->
+                    <div class="admin-tab-panel" id="admin-portfolio">
+                        <div class="admin-split-grid">
+                            <div class="card">
+                                <h3>Add Media to Portfolio</h3>
+                                <form id="admin-portfolio-form">
+                                    <div class="form-group">
+                                        <label for="port-input-title">Title</label>
+                                        <input type="text" id="port-input-title" class="form-control" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="port-input-category">Category</label>
+                                            <select id="port-input-category" class="form-control" required>
+                                                <option value="wedding">Wedding</option>
+                                                <option value="pre-wedding">Pre-Wedding</option>
+                                                <option value="maternity">Maternity</option>
+                                                <option value="baby">Baby Shoot</option>
+                                                <option value="event">Event Coverage</option>
+                                                <option value="drone">Drone Shoot</option>
+                                                <option value="product">Product Photo</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="port-input-type">Media Type</label>
+                                            <select id="port-input-type" class="form-control" required>
+                                                <option value="image">Image</option>
+                                                <option value="video">Video</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="port-input-source">Source Option</label>
+                                        <select id="port-input-source" class="form-control">
+                                            <option value="url">External Web URL</option>
+                                            <option value="file">Local File Upload</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Web URL input -->
+                                    <div class="form-group" id="port-source-url-group">
+                                        <label for="port-input-url">Media Source URL</label>
+                                        <input type="url" id="port-input-url" class="form-control" placeholder="https://images.unsplash.com/...">
+                                    </div>
+
+                                    <!-- File input -->
+                                    <div class="form-group hidden" id="port-source-file-group">
+                                        <label for="port-input-file">Choose Media File</label>
+                                        <input type="file" id="port-input-file" class="form-control-file" accept="image/*,video/*">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="port-input-thumb">Video Thumbnail URL (Optional for videos)</label>
+                                        <input type="url" id="port-input-thumb" class="form-control" placeholder="https://images.unsplash.com/...">
+                                    </div>
+
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" id="port-input-featured" class="form-check-input" value="1">
+                                        <label for="port-input-featured" class="form-check-label">Feature on Homepage Slider/Grid</label>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100">Upload to Gallery</button>
+                                </form>
+                            </div>
+                            
+                            <!-- Portfolio Listing -->
+                            <div class="card">
+                                <h3>Current Gallery Items</h3>
+                                <div class="admin-portfolio-list" id="admin-portfolio-list-container">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN OFFERS PANEL -->
+                    <div class="admin-tab-panel" id="admin-offers">
+                        <div class="admin-split-grid">
+                            <!-- Add Offer Card -->
+                            <div class="card">
+                                <h3>Add Promotion / Coupon</h3>
+                                <form id="admin-offers-form">
+                                    <input type="hidden" id="offer-input-id" value="">
+                                    <div class="form-group">
+                                        <label for="offer-input-title">Promotion Title</label>
+                                        <input type="text" id="offer-input-title" class="form-control" required placeholder="e.g. Wedding Early Bird">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="offer-input-desc">Description</label>
+                                        <input type="text" id="offer-input-desc" class="form-control" required placeholder="Details about this promotion">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="offer-input-code">Coupon Code</label>
+                                            <input type="text" id="offer-input-code" class="form-control" required placeholder="e.g. WEDDING15">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="offer-input-discount">Discount %</label>
+                                            <input type="number" id="offer-input-discount" class="form-control" required min="1" max="100" placeholder="15">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="offer-input-start">Start Date</label>
+                                            <input type="date" id="offer-input-start" class="form-control" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="offer-input-expiry">Expiry Date</label>
+                                            <input type="date" id="offer-input-expiry" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" id="offer-input-active" class="form-check-input" checked value="1">
+                                        <label for="offer-input-active" class="form-check-label">Is Coupon Active</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100" id="btn-save-offer">Create Offer</button>
+                                    <button type="button" class="btn btn-outline w-100 mt-2 hidden" id="btn-cancel-edit-offer">Cancel Edit</button>
+                                </form>
+                            </div>
+
+                            <!-- List Coupons -->
+                            <div class="card">
+                                <h3>Manage Active Coupons</h3>
+                                <div class="admin-offers-list" id="admin-offers-list-container">
+                                    <!-- dynamic offers list -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN SETTINGS PANEL -->
+                    <div class="admin-tab-panel" id="admin-settings">
+                        <div class="card">
+                            <h2>Manage Website Parameters</h2>
+                            <form id="admin-settings-form">
+                                <div class="form-group">
+                                    <label for="settings-studio-name">Studio Name</label>
+                                    <input type="text" id="settings-studio-name" class="form-control" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="settings-contact-email">Contact Email</label>
+                                        <input type="email" id="settings-contact-email" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="settings-contact-phone">Contact Phone</label>
+                                        <input type="text" id="settings-contact-phone" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="settings-whatsapp">WhatsApp Contact (Number format: 919876543210)</label>
+                                    <input type="text" id="settings-whatsapp" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="settings-address">Studio Address</label>
+                                    <input type="text" id="settings-address" class="form-control" required>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Save Site Config</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= CONTACT VIEW ================= -->
+        <section id="contact-view" class="app-view">
+            <div class="page-header container">
+                <h1>Contact Us</h1>
+                <p>Have a custom photography requirement, event inquiries, or questions? Send us an inquiry message or reach out on social media.</p>
+            </div>
+            
+            <div class="container">
+                <div class="contact-grid">
+                    <!-- Inquiry Form -->
+                    <div class="card">
+                        <h3>Submit an Inquiry</h3>
+                        <p class="mb-3 text-muted">Use this form to request custom quotations or ask any questions.</p>
+                        <form id="contact-enquiry-form">
+                            <div class="form-group">
+                                <label for="contact-name">Full Name</label>
+                                <input type="text" id="contact-name" class="form-control" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="contact-email">Email Address</label>
+                                    <input type="email" id="contact-email" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="contact-phone">Phone Number</label>
+                                    <input type="tel" id="contact-phone" class="form-control" placeholder="+91">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Subject</label>
+                                <input type="text" id="contact-subject" class="form-control" required placeholder="e.g. Wedding shoot custom quote">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-message">Your Message</label>
+                                <textarea id="contact-message" class="form-control" rows="5" required placeholder="Include date, locations, expected duration..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Inquiry <i class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Details / Info -->
+                    <div class="contact-info-column">
+                        <div class="card info-card">
+                            <h3>Studio Contacts</h3>
+                            <div class="contact-item">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <div>
+                                    <h4>Address</h4>
+                                    <p id="contact-lbl-address">Loading...</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fa-solid fa-phone"></i>
+                                <div>
+                                    <h4>Call Us</h4>
+                                    <p id="contact-lbl-phone">Loading...</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fa-solid fa-envelope"></i>
+                                <div>
+                                    <h4>Email Contact</h4>
+                                    <p id="contact-lbl-email">Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Business Hours -->
+                        <div class="card info-card mt-3">
+                            <h3>Business Hours</h3>
+                            <ul class="hours-list" id="contact-hours-list">
+                                <!-- Loaded dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Google Maps Embed -->
+                <div class="maps-holder card mt-4">
+                    <h3>Studio Location</h3>
+                    <div class="map-iframe-container">
+                        <!-- Custom premium styled map placeholder -->
+                        <div class="mock-map">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <p class="bold">123, Luxury Arcade, MG Road, Bangalore</p>
+                            <a href="https://maps.google.com" target="_blank" class="btn btn-outline btn-sm">Open in Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ================= AUTH MODAL ================= -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-container max-width-xs">
+            <button class="modal-close-btn" id="auth-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-tabs">
+                <button class="modal-tab active" id="auth-tab-login">Login</button>
+                <button class="modal-tab" id="auth-tab-register">Register</button>
+            </div>
+            
+            <!-- Login Panel -->
+            <div class="modal-panel active" id="panel-login">
+                <form id="auth-login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" class="form-control" required placeholder="client@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login <i class="fa-solid fa-right-to-bracket"></i></button>
+                </form>
+                <p class="auth-hint">Admin testing: <strong>admin@bhumistudio.com</strong> / <strong>admin123</strong></p>
+                <p class="auth-hint">Client testing: <strong>client@gmail.com</strong> / <strong>client123</strong></p>
+            </div>
+
+            <!-- Register Panel -->
+            <div class="modal-panel" id="panel-register">
+                <form id="auth-register-form">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" class="form-control" required placeholder="Rahul Sharma">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <input type="email" id="register-email" class="form-control" required placeholder="rahul@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-phone">Phone Number</label>
+                        <input type="tel" id="register-phone" class="form-control" placeholder="+91">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" class="form-control" required minlength="6" placeholder="At least 6 characters">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Register <i class="fa-solid fa-user-plus"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CUSTOM QUOTE MODAL ================= -->
+    <div class="modal-overlay" id="quote-modal">
+        <div class="modal-container max-width-sm">
+            <button class="modal-close-btn" id="quote-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            <h2>Request a Custom Quotation</h2>
+            <p class="mb-3 text-muted">Submit details for your event, and we will formulate a personalized pricing grid for you.</p>
+            <form id="modal-quote-form">
+                <div class="form-group">
+                    <label for="quote-name">Your Name</label>
+                    <input type="text" id="quote-name" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="quote-email">Email Address</label>
+                        <input type="email" id="quote-email" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="quote-phone">Phone Number</label>
+                        <input type="tel" id="quote-phone" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="quote-service">Service Category</label>
+                    <select id="quote-service" class="form-control" required>
+                        <option value="Wedding Suite">Wedding Photography & Films Combo</option>
+                        <option value="Pre-Wedding">Pre-Wedding Shoot Only</option>
+                        <option value="Commercial">Commercial/Product Photography</option>
+                        <option value="Event Coverage">Corporate/Social Events</option>
+                        <option value="Aerial drone">Aerial Drone Videography</option>
+                        <option value="Video Editing">Post-production Editing & Mixing</option>
+                        <option value="Custom Combo">Other Custom Combination</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quote-details">Describe the Project & Deliverables</label>
+                    <textarea id="quote-details" class="form-control" rows="4" placeholder="Include date range, location, number of sessions, outputs needed (albums, cinematic trailers, long films etc)..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Request Quotation <i class="fa-solid fa-file-signature"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MEDIA LIGHTBOX MODAL ================= -->
+    <div class="lightbox-overlay" id="lightbox-modal">
+        <button class="lightbox-close" id="lightbox-close-btn"><i class="fa-solid fa-xmark"></i></button>
+        <button class="lightbox-prev" id="lightbox-prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="lightbox-next" id="lightbox-next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        
+        <div class="lightbox-content-holder">
+            <!-- image container -->
+            <img src="" id="lightbox-img" class="lightbox-media hidden" alt="Lightbox Image">
+            <!-- video container -->
+            <video id="lightbox-video" class="lightbox-media hidden" controls autoplay loop>
+                <source src="" type="video/mp4">
+            </video>
+        </div>
+        <div class="lightbox-caption" id="lightbox-caption-lbl">Media Title</div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div class="toast-container" id="toast-wrapper"></div>
+
+    <!-- ================= STICKY FOOTER & WHATSAPP BUTTON ================= -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3><span class="gold-text">BHUMI</span> STUDIO</h3>
+                <p>Luxury visual documentation for your premium events. Crafted with cinematic art.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://pinterest.com" target="_blank" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Menu</h4>
+                <ul>
+                    <li><a href="#" onclick="app.navigateTo('home')">Home</a></li>
+                    <li><a href="#" onclick="app.navigateTo('services')">Services</a></li>
+                    <li><a href="#" onclick="app.navigateTo('portfolio')">Portfolio Gallery</a></li>
+                    <li><a href="#" onclick="app.navigateTo('booking')">Book Shoot</a></li>
+                    <li><a href="#" onclick="app.navigateTo('contact')">Get in Touch</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Bhumi HQ</h4>
+                <p id="footer-lbl-address">Loading...</p>
+                <p id="footer-lbl-phone">Loading...</p>
+                <p id="footer-lbl-email">Loading...</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Bhumi Studio. All Rights Reserved. Crafted for Timeless Memories.</p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp booking button -->
+    <a href="https://wa.me/919876543210?text=Hi%20Bhumi%20Studio,%20I%20am%20interested%20in%20booking%20a%20photography/videography%20session." target="_blank" class="whatsapp-sticky" id="whatsapp-sticky-btn">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="tooltip">WhatsApp Booking</span>
+    </a>
+
+    <!-- APP SCRIPT LOADER -->
+    <script src="/js/api.js"></script>
+    <script src="/js/portfolio.js"></script>
+    <script src="/js/booking.js"></script>
+    <script src="/js/admin.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
