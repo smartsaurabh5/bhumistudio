@@ -1,6 +1,6 @@
-# Bhumi Studio - Full-Stack Photography & Videography Website
+# Bhumi Photography - Full-Stack Photography & Videography Website
 
-Bhumi Studio is a premium, responsive, and luxury-themed full-stack website designed for a modern photography and videography studio. It features an interactive single-page application (SPA) frontend, a SQLite database, and a zero-dependency Python backend server.
+Bhumi Photography is a premium, responsive, and luxury-themed full-stack website designed for a modern photography and videography studio. It features an interactive single-page application (SPA) frontend, a SQLite database, and a zero-dependency Python backend server.
 
 ---
 

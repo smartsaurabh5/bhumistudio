@@ -159,7 +159,7 @@ def init_db():
                        (client_id, "Rahul Sharma", "client@gmail.com", client_pass, "customer", "+919876543211"))
 
         # Add default Settings
-        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("studio_name", "Bhumi Studio"))
+        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("studio_name", "Bhumi Photography"))
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("contact_email", "info@bhumistudio.com"))
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("contact_phone", "+91 98765 43210"))
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("whatsapp", "919876543210"))
@@ -177,7 +177,7 @@ def init_db():
         
         # Add default Testimonials
         cursor.execute("INSERT INTO testimonials (id, client_name, rating, comment, service, avatar) VALUES (?, ?, ?, ?, ?, ?)",
-                       (str(uuid.uuid4()), "Priya & Amit", 5, "Bhumi Studio made our wedding look like a fairy tale. The cinematic trailer was incredibly shot, and the team was extremely professional!", "Wedding Shoot", ""))
+                       (str(uuid.uuid4()), "Priya & Amit", 5, "Bhumi Photography made our wedding look like a fairy tale. The cinematic trailer was incredibly shot, and the team was extremely professional!", "Wedding Shoot", ""))
         cursor.execute("INSERT INTO testimonials (id, client_name, rating, comment, service, avatar) VALUES (?, ?, ?, ?, ?, ?)",
                        (str(uuid.uuid4()), "Vikram Rathore", 5, "Extremely impressed by their product photography. They captured our brand aesthetics perfectly. Our sales have increased since using their visuals.", "Product Photography", ""))
         cursor.execute("INSERT INTO testimonials (id, client_name, rating, comment, service, avatar) VALUES (?, ?, ?, ?, ?, ?)",
@@ -1001,11 +1001,11 @@ class APIRequestHandler(BaseHTTPRequestHandler):
 def run(port=8000):
     server_address = ('', port)
     httpd = HTTPServer(server_address, APIRequestHandler)
-    print(f"Bhumi Studio Backend Server active at http://localhost:{port}")
+    print(f"Bhumi Photography Backend Server active at http://localhost:{port}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print("\nStopping Bhumi Studio server...")
+        print("\nStopping Bhumi Photography server...")
         httpd.server_close()
         sys.exit(0)
 

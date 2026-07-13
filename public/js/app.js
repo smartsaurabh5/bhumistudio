@@ -249,7 +249,7 @@ const app = {
         const address = this.settings.address || "123, Luxury Arcade, Bangalore";
         const email = this.settings.contact_email || "info@bhumistudio.com";
         const phone = this.settings.contact_phone || "+91 98765 43210";
-        const studioName = this.settings.studio_name || "Bhumi Studio";
+        const studioName = this.settings.studio_name || "Bhumi Photography";
 
         const setVal = (id, val) => {
             const el = document.getElementById(id);
@@ -680,7 +680,7 @@ const app = {
 
             const invoiceContent = `
 ========================================
-             BHUMI STUDIO
+             BHUMI PHOTOGRAPHY
      Timeless Stories, Cinematic Art
 ========================================
 Receipt Date: ${new Date().toLocaleDateString()}
@@ -700,7 +700,7 @@ Status: ${b.status.toUpperCase()}
 
 TOTAL AMOUNT CHARGED: INR ${b.price.toLocaleString()}
 
-Thank you for choosing Bhumi Studio!
+Thank you for choosing Bhumi Photography!
 For inquiries, email info@bhumistudio.com
 ========================================
             `;
@@ -708,7 +708,7 @@ For inquiries, email info@bhumistudio.com
             const blob = new Blob([invoiceContent], { type: "text/plain;charset=utf-8" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `BhumiStudio_Receipt_${b.id.substring(0,8)}.txt`;
+            link.download = `BhumiPhotography_Receipt_${b.id.substring(0,8)}.txt`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
