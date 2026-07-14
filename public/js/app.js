@@ -241,10 +241,14 @@ const app = {
             this.applyGlobalSettings();
         } catch (error) {
             console.error("Failed to load settings from server:", error);
+            this.settings = {};
+            this.applyGlobalSettings();
         }
     },
 
     applyGlobalSettings() {
+        if (!this.settings) this.settings = {};
+        
         // Change footer and contact labels
         const address = this.settings.address || "Badlapur Jaunpur Near Saltanat bahadur Pg College";
         const email = this.settings.contact_email || "bhumimovies66@gmail.com";
@@ -256,66 +260,82 @@ const app = {
             if (el) el.textContent = val;
         };
 
-        setVal("contact-lbl-address", address);
-        setVal("contact-lbl-phone", phone);
-        setVal("contact-lbl-email", email);
-        setVal("footer-lbl-address", address);
-        setVal("footer-lbl-phone", phone);
-        setVal("footer-lbl-email", email);
+        try {
+            setVal("contact-lbl-address", address);
+            setVal("contact-lbl-phone", phone);
+            setVal("contact-lbl-email", email);
+            setVal("footer-lbl-address", address);
+            setVal("footer-lbl-phone", phone);
+            setVal("footer-lbl-email", email);
+        } catch (e) {
+            console.error("Failed to set contact labels", e);
+        }
         
-        // Update WhatsApp sticky button href link
-        const whatsappBtn = document.getElementById("whatsapp-sticky-btn");
-        if (whatsappBtn && this.settings.whatsapp) {
-            whatsappBtn.href = `https://wa.me/${this.settings.whatsapp}?text=Hi%20${encodeURIComponent(studioName)},%20I%20am%20interested%20in%20booking%20a%20photography/videography%20session.`;
+        try {
+            // Update WhatsApp sticky button href link
+            const whatsappBtn = document.getElementById("whatsapp-sticky-btn");
+            if (whatsappBtn && this.settings.whatsapp) {
+                whatsappBtn.href = `https://wa.me/${this.settings.whatsapp}?text=Hi%20${encodeURIComponent(studioName)},%20I%20am%20interested%20in%20booking%20a%20photography/videography%20session.`;
+            }
+        } catch (e) {
+            console.error("Failed to set whatsapp button", e);
         }
 
-        // Load dynamic marquee images
-        const marqueeTrack = document.querySelector(".marquee-track-horizontal");
-        if (marqueeTrack) {
-            let imgs = [];
-            try {
-                if (this.settings.hero_marquee_images) {
-                    if (Array.isArray(this.settings.hero_marquee_images)) {
-                        imgs = this.settings.hero_marquee_images;
-                    } else {
-                        imgs = JSON.parse(this.settings.hero_marquee_images);
+        try {
+            // Load dynamic marquee images
+            const marqueeTrack = document.querySelector(".marquee-track-horizontal");
+            if (marqueeTrack) {
+                let imgs = [];
+                try {
+                    if (this.settings.hero_marquee_images) {
+                        if (Array.isArray(this.settings.hero_marquee_images)) {
+                            imgs = this.settings.hero_marquee_images;
+                        } else {
+                            imgs = JSON.parse(this.settings.hero_marquee_images);
+                        }
                     }
+                } catch(e) {
+                    console.error("Failed to parse hero marquee images", e);
                 }
-            } catch(e) {
-                console.error("Failed to parse hero marquee images", e);
+                
+                // Fallback default list if empty or invalid
+                if (!imgs || !Array.isArray(imgs) || imgs.length === 0) {
+                    imgs = [
+                        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1507504038482-762143725f82?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=600&q=80"
+                    ];
+                }
+                
+                // Build the horizontal marquee track containing original + duplicate lists
+                const allImgs = [...imgs, ...imgs];
+                marqueeTrack.innerHTML = allImgs.map((src, index) => 
+                    `<img src="${src || 'https://placehold.co/200x280?text=No+Photo'}" alt="Wedding Photo ${index + 1}">`
+                ).join("");
             }
-            
-            // Fallback default list if empty
-            if (!imgs || imgs.length === 0) {
-                imgs = [
-                    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1507504038482-762143725f82?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-                    "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=600&q=80"
-                ];
-            }
-            
-            // Build the horizontal marquee track containing original + duplicate lists
-            const allImgs = [...imgs, ...imgs];
-            marqueeTrack.innerHTML = allImgs.map((src, index) => 
-                `<img src="${src}" alt="Wedding Photo ${index + 1}">`
-            ).join("");
+        } catch (e) {
+            console.error("Failed to load marquee images track", e);
         }
 
-        // Load FAQs list into contact hours or home details
-        const hoursList = document.getElementById("contact-hours-list");
-        if (hoursList && this.settings.business_hours) {
-            hoursList.innerHTML = Object.entries(this.settings.business_hours).map(([day, hrs]) => `
-                <li><span>${day}</span> <span>${hrs}</span></li>
-            `).join("");
+        try {
+            // Load FAQs list into contact hours or home details
+            const hoursList = document.getElementById("contact-hours-list");
+            if (hoursList && this.settings.business_hours) {
+                hoursList.innerHTML = Object.entries(this.settings.business_hours).map(([day, hrs]) => `
+                    <li><span>${day}</span> <span>${hrs}</span></li>
+                `).join("");
+            }
+        } catch (e) {
+            console.error("Failed to set business hours", e);
         }
     },
 

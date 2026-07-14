@@ -1004,8 +1004,12 @@ class APIRequestHandler(BaseHTTPRequestHandler):
                 content = f.read()
             self.send_response(200)
             self.send_header('Content-Type', content_type)
-            # Add cache control for faster page speed
-            if ext in ['.css', '.js', '.png', '.jpg', '.jpeg', '.svg']:
+            # Add cache control: always validate HTML, cache static assets
+            if ext.lower() in ['.html', '.htm']:
+                self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                self.send_header('Pragma', 'no-cache')
+                self.send_header('Expires', '0')
+            elif ext.lower() in ['.css', '.js', '.png', '.jpg', '.jpeg', '.svg']:
                 self.send_header('Cache-Control', 'max-age=86400')
             self.end_headers()
             self.wfile.write(content)
