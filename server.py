@@ -160,10 +160,10 @@ def init_db():
 
         # Add default Settings
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("studio_name", "Bhumi Photography"))
-        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("contact_email", "info@bhumistudio.com"))
-        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("contact_phone", "+91 98765 43210"))
-        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("whatsapp", "919876543210"))
-        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("address", "123, Luxury Arcade, MG Road, Bangalore, India"))
+        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("contact_email", "bhumimovies66@Gmail.com"))
+        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("contact_phone", "+91 9336356173 -7080641824"))
+        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("whatsapp", "7080641824"))
+        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("address", "Badlapur Jaunpur Near Saltanat Bahadur Pg College"))
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("business_hours", json.dumps({
             "Monday - Friday": "10:00 AM - 08:00 PM",
             "Saturday - Sunday": "09:00 AM - 09:00 PM"
