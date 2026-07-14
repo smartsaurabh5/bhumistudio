@@ -164,6 +164,21 @@ def init_db():
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("contact_phone", "9336356173 - 70880641824"))
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("whatsapp", "917080641824"))
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("address", "Badlapur Jaunpur Near Saltanat bahadur Pg College"))
+        default_marquee_images = [
+            "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1507504038482-762143725f82?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=600&q=80"
+        ]
+        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("hero_marquee_images", json.dumps(default_marquee_images)))
         cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("business_hours", json.dumps({
             "Monday - Friday": "10:00 AM - 08:00 PM",
             "Saturday - Sunday": "09:00 AM - 09:00 PM"

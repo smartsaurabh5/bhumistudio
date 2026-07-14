@@ -6,9 +6,13 @@ const Admin = {
     analytics: null,
     bookings: [],
     enquiries: [],
+    isInitialized: false,
 
     async init() {
-        this.bindEvents();
+        if (!this.isInitialized) {
+            this.bindEvents();
+            this.isInitialized = true;
+        }
         await this.loadAllAdminData();
     },
 
@@ -23,6 +27,8 @@ const Admin = {
                 this.loadEnquiries(),
                 this.loadOffers()
             ]);
+            await this.loadSettingsFormValues(app.settings);
+            this.loadMarqueePhotosFormValues(app.settings);
         } catch (error) {
             console.error("Failed to load admin panels data:", error);
             app.showToast("Failed to compile administrator panel data.", "error");
@@ -89,6 +95,12 @@ const Admin = {
         const settingsForm = document.getElementById("admin-settings-form");
         if (settingsForm) {
             settingsForm.addEventListener("submit", (e) => this.handleSaveSettings(e));
+        }
+
+        // Marquee photos save button listener
+        const saveMarqueeBtn = document.getElementById("btn-save-marquee-photos");
+        if (saveMarqueeBtn) {
+            saveMarqueeBtn.addEventListener("click", () => this.handleSaveMarqueePhotos());
         }
     },
 
@@ -555,11 +567,12 @@ const Admin = {
         const studioName = document.getElementById("settings-studio-name");
         if (!studioName) return;
 
-        studioName.value = settings.studio_name || "";
-        document.getElementById("settings-contact-email").value = settings.contact_email || "";
-        document.getElementById("settings-contact-phone").value = settings.contact_phone || "";
-        document.getElementById("settings-whatsapp").value = settings.whatsapp || "";
-        document.getElementById("settings-address").value = settings.address || "";
+        const s = settings || {};
+        studioName.value = s.studio_name || "";
+        document.getElementById("settings-contact-email").value = s.contact_email || "";
+        document.getElementById("settings-contact-phone").value = s.contact_phone || "";
+        document.getElementById("settings-whatsapp").value = s.whatsapp || "";
+        document.getElementById("settings-address").value = s.address || "";
     },
 
     async handleSaveSettings(e) {
@@ -578,6 +591,139 @@ const Admin = {
             await API.post("/api/settings", payload);
             app.showToast("Site configuration saved successfully!", "success");
             await app.loadSettings(); // Reload global settings
+        } catch (error) {
+            app.showToast(error.message, "error");
+        } finally {
+            app.hideLoader();
+        }
+    },
+
+    loadMarqueePhotosFormValues(settings) {
+        const marqueeListContainer = document.getElementById("marquee-photos-list");
+        if (!marqueeListContainer) return;
+
+        const s = settings || {};
+        let imgs = [];
+        try {
+            if (s.hero_marquee_images) {
+                if (Array.isArray(s.hero_marquee_images)) {
+                    imgs = s.hero_marquee_images;
+                } else {
+                    imgs = JSON.parse(s.hero_marquee_images);
+                }
+            }
+        } catch(e) {
+            console.error("Failed to parse marquee images", e);
+        }
+
+        // Fallback default list if empty
+        if (!imgs || imgs.length === 0) {
+            imgs = [
+                "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1507504038482-762143725f82?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=600&q=80"
+            ];
+        }
+
+        while (imgs.length < 12) {
+            imgs.push("");
+        }
+
+        marqueeListContainer.innerHTML = imgs.map((src, index) => `
+            <div class="marquee-photo-item" data-index="${index}">
+                <label>Photo ${index + 1}</label>
+                <img class="marquee-photo-preview" src="${src || 'https://placehold.co/200x280?text=No+Photo'}" alt="Preview" id="marquee-preview-${index}">
+                <div class="form-group mb-2">
+                    <input type="text" class="form-control marquee-url-input" id="marquee-url-${index}" placeholder="Paste URL or Drive link" value="${src || ''}">
+                </div>
+                <div class="form-group mb-0">
+                    <label class="btn btn-outline btn-sm w-100 text-center cursor-pointer mb-0">
+                        Upload Local File
+                        <input type="file" class="hidden marquee-file-input" data-index="${index}" accept="image/*">
+                    </label>
+                </div>
+            </div>
+        `).join("");
+
+        // Bind text input change events to update previews immediately
+        for (let i = 0; i < 12; i++) {
+            const urlInput = document.getElementById(`marquee-url-${i}`);
+            const previewImg = document.getElementById(`marquee-preview-${i}`);
+            if (urlInput && previewImg) {
+                urlInput.addEventListener("input", (e) => {
+                    previewImg.src = e.target.value || 'https://placehold.co/200x280?text=No+Photo';
+                });
+            }
+        }
+
+        // Bind file change events
+        const fileInputs = marqueeListContainer.querySelectorAll(".marquee-file-input");
+        fileInputs.forEach(input => {
+            input.addEventListener("change", (e) => this.handleMarqueeFileUpload(e));
+        });
+    },
+
+    async handleMarqueeFileUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const index = e.target.getAttribute("data-index");
+        const reader = new FileReader();
+
+        reader.onload = async () => {
+            try {
+                app.showLoader();
+                const response = await API.post("/api/upload", {
+                    filename: file.name,
+                    content: reader.result
+                });
+                
+                const urlInput = document.getElementById(`marquee-url-${index}`);
+                const previewImg = document.getElementById(`marquee-preview-${index}`);
+                if (urlInput && previewImg) {
+                    urlInput.value = response.url;
+                    previewImg.src = response.url;
+                    app.showToast(`Photo ${parseInt(index) + 1} uploaded successfully!`, "success");
+                }
+            } catch (error) {
+                app.showToast(`Upload failed: ${error.message}`, "error");
+            } finally {
+                app.hideLoader();
+            }
+        };
+
+        reader.onerror = () => {
+            app.showToast("Failed to read file", "error");
+        };
+
+        reader.readAsDataURL(file);
+    },
+
+    async handleSaveMarqueePhotos() {
+        const urls = [];
+        for (let i = 0; i < 12; i++) {
+            const val = document.getElementById(`marquee-url-${i}`).value.trim();
+            urls.push(val || "https://placehold.co/200x280?text=Empty+Photo");
+        }
+
+        const payload = {
+            hero_marquee_images: urls
+        };
+
+        try {
+            app.showLoader();
+            await API.post("/api/settings", payload);
+            app.showToast("Front page photos updated successfully!", "success");
+            await app.loadSettings(); // Reload global settings and update marquee UI
         } catch (error) {
             app.showToast(error.message, "error");
         } finally {

@@ -69,11 +69,40 @@
         <section id="home-view" class="app-view active">
             <!-- Hero Video Banner -->
             <div class="hero-section">
-                <div class="hero-video-bg">
+                <div class="hero-marquee-bg">
                     <div class="video-overlay"></div>
-                    <video autoplay loop muted playsinline id="hero-video">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-young-couple-walking-in-a-forest-43223-large.mp4" type="video/mp4">
-                    </video>
+                    <div class="hero-vignette"></div>
+                    
+                    <div class="marquee-row-container">
+                        <div class="marquee-track-horizontal">
+                            <!-- Original 12 Wedding Photos -->
+                            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="Wedding 1">
+                            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Wedding 2">
+                            <img src="https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=600&q=80" alt="Wedding 3">
+                            <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=600&q=80" alt="Wedding 4">
+                            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80" alt="Wedding 5">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" alt="Wedding 6">
+                            <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" alt="Wedding 7">
+                            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80" alt="Wedding 8">
+                            <img src="https://images.unsplash.com/photo-1507504038482-762143725f82?auto=format&fit=crop&w=600&q=80" alt="Wedding 9">
+                            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80" alt="Wedding 10">
+                            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80" alt="Wedding 11">
+                            <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=600&q=80" alt="Wedding 12">
+                            <!-- Duplicate 12 Wedding Photos for seamless looping -->
+                            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="Wedding 1">
+                            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Wedding 2">
+                            <img src="https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=600&q=80" alt="Wedding 3">
+                            <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=600&q=80" alt="Wedding 4">
+                            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80" alt="Wedding 5">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" alt="Wedding 6">
+                            <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" alt="Wedding 7">
+                            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80" alt="Wedding 8">
+                            <img src="https://images.unsplash.com/photo-1507504038482-762143725f82?auto=format&fit=crop&w=600&q=80" alt="Wedding 9">
+                            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80" alt="Wedding 10">
+                            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80" alt="Wedding 11">
+                            <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=600&q=80" alt="Wedding 12">
+                        </div>
+                    </div>
                 </div>
                 <div class="hero-content">
                     <span class="hero-subtitle">PREMIUM WEDDING & CINEMATIC PRODUCTION</span>
@@ -487,6 +516,7 @@
                     <button class="admin-tab-btn" data-tab="admin-portfolio"><i class="fa-solid fa-images"></i> Manage Portfolio</button>
                     <button class="admin-tab-btn" data-tab="admin-offers"><i class="fa-solid fa-tags"></i> Coupons & Offers</button>
                     <button class="admin-tab-btn" data-tab="admin-settings"><i class="fa-solid fa-sliders"></i> Site Settings</button>
+                    <button class="admin-tab-btn" data-tab="admin-marquee"><i class="fa-solid fa-images"></i> Front Page Photos</button>
                 </div>
 
                 <div class="admin-tab-content">
@@ -751,6 +781,22 @@
                         </div>
                     </div>
 
+                    <!-- ADMIN FRONT PAGE PHOTOS PANEL -->
+                    <div class="admin-tab-panel" id="admin-marquee">
+                        <div class="card">
+                            <h2>Front Page Photos</h2>
+                            <p class="text-muted mb-4">Manage the 12 photos displayed on the main scrolling gallery. You can load files from your local system (which will be uploaded to the server), paste google drive links, or paste direct URLs.</p>
+                            
+                            <div class="marquee-photos-editor-list" id="marquee-photos-list">
+                                <!-- 12 image inputs will be generated dynamically here -->
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button type="button" class="btn btn-primary" id="btn-save-marquee-photos">Save Front Page Photos</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -1005,10 +1051,10 @@
     </a>
 
     <!-- APP SCRIPT LOADER -->
-    <script src="/js/api.js"></script>
-    <script src="/js/portfolio.js"></script>
-    <script src="/js/booking.js"></script>
-    <script src="/js/admin.js"></script>
-    <script src="/js/app.js"></script>
+    <script src="/js/api.js?v=1.0.3"></script>
+    <script src="/js/portfolio.js?v=1.0.3"></script>
+    <script src="/js/booking.js?v=1.0.3"></script>
+    <script src="/js/admin.js?v=1.0.3"></script>
+    <script src="/js/app.js?v=1.0.3"></script>
 </body>
 </html>
