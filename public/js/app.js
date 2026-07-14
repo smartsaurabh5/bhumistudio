@@ -248,7 +248,7 @@ const app = {
         // Change footer and contact labels
         const address = this.settings.address || "Badlapur Jaunpur Near Saltanat bahadur Pg College";
         const email = this.settings.contact_email || "bhumimovies66@gmail.com";
-        const phone = this.settings.contact_phone || "+91 9336356173 , 7080641824";
+        const phone = this.settings.contact_phone || "9336356173 - 70880641824";
         const studioName = this.settings.studio_name || "Bhumi Photography";
 
         const setVal = (id, val) => {
@@ -701,7 +701,7 @@ Status: ${b.status.toUpperCase()}
 TOTAL AMOUNT CHARGED: INR ${b.price.toLocaleString()}
 
 Thank you for choosing Bhumi Photography!
-For inquiries, email info@bhumistudio.com
+For inquiries, email bhumimovies66@gmail.com
 ========================================
             `;
 
