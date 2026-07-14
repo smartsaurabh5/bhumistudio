@@ -246,9 +246,9 @@ const app = {
 
     applyGlobalSettings() {
         // Change footer and contact labels
-        const address = this.settings.address || "123, Luxury Arcade, Bangalore";
-        const email = this.settings.contact_email || "info@bhumistudio.com";
-        const phone = this.settings.contact_phone || "+91 98765 43210";
+        const address = this.settings.address || "Badlapur Jaunpur Near Saltanat bahadur Pg College";
+        const email = this.settings.contact_email || "bhumimovies66@gmail.com";
+        const phone = this.settings.contact_phone || "+91 9336356173 , 7080641824";
         const studioName = this.settings.studio_name || "Bhumi Photography";
 
         const setVal = (id, val) => {
