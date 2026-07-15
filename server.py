@@ -190,6 +190,75 @@ def init_db():
             {"question": "Can we customize the photography packages?", "answer": "Absolutely! We offer customized quotes based on your specific requirements, duration, and deliverables."}
         ])))
         
+        default_packages = {
+            "Wedding Photography": [
+                { "name": "Silver", "price": 80000, "features": ["1 Photographer", "1 Day coverage", "100 Edited digital photos", "Online delivery"] },
+                { "name": "Gold", "price": 150000, "features": ["2 Photographers", "2 Days coverage", "250 Edited digital photos", "Bespoke Printed Album (40 pages)", "Drone photography included"] },
+                { "name": "Platinum", "price": 250000, "features": ["Lead Photographer + 2 assistants", "Full wedding coverage (up to 4 days)", "Unlimited photos edited", "Premium leather album & gift cases", "Drone + candid sessions"] }
+            ],
+            "Wedding Videography": [
+                { "name": "Silver", "price": 90000, "features": ["1 Videographer", "1 Day coverage", "30-min Edited video summary", "Full HD quality"] },
+                { "name": "Gold", "price": 160000, "features": ["2 Videographers", "2 Days coverage", "5-min Cinematic Trailer", "60-min Edited film", "Drone videography included"] },
+                { "name": "Platinum", "price": 280000, "features": ["3 Videographers (incl. candid specialist)", "Up to 4 days coverage", "10-min Cinematic Film Trailer", "2-hour Wedding Movie", "4K HDR & drone coverage"] }
+            ],
+            "Pre-Wedding Shoot": [
+                { "name": "Silver", "price": 30000, "features": ["4-hour session", "1 Location", "30 Edited photos", "1 Outfit change"] },
+                { "name": "Gold", "price": 55000, "features": ["Full-day session (8 hours)", "2 Locations", "60 Edited photos", "2-min Cinematic teaser video", "3 Outfit changes"] },
+                { "name": "Platinum", "price": 90000, "features": ["2 Days shoot", "Multiple locations", "100 Edited photos", "5-min Cinematic pre-wedding video", "Unlimited outfits", "Drone visual captures"] }
+            ],
+            "Maternity Shoot": [
+                { "name": "Silver", "price": 15000, "features": ["2-hour session", "Studio backdrop", "15 Edited photos"] },
+                { "name": "Gold", "price": 25000, "features": ["3-hour session", "Studio + Outdoor garden", "35 Edited photos", "Props provided"] },
+                { "name": "Platinum", "price": 40000, "features": ["Full-day shoot", "Luxury milk-bath or custom setups", "60 Edited photos", "Gowns and makeup artist included"] }
+            ],
+            "Baby Shoot": [
+                { "name": "Silver", "price": 12000, "features": ["2-hour session", "2 Prop themes", "15 Edited photos"] },
+                { "name": "Gold", "price": 20000, "features": ["3-hour session", "4 Prop themes", "30 Edited photos", "Family portrait session included"] },
+                { "name": "Platinum", "price": 35000, "features": ["Home/Studio setup", "Unlimited props", "50 Edited photos", "1-min mini video film"] }
+            ],
+            "Birthday Events": [
+                { "name": "Silver", "price": 15000, "features": ["3-hour coverage", "1 candid photographer", "100 digital files"] },
+                { "name": "Gold", "price": 28000, "features": ["5-hour coverage", "1 Photographer + 1 Videographer", "Full event video edit", "200 Edited photos"] },
+                { "name": "Platinum", "price": 45000, "features": ["Full event coverage", "2 Photographers + 1 Videographer", "Cinematic birthday movie", "Photobooth setup included"] }
+            ],
+            "Corporate Events": [
+                { "name": "Silver", "price": 35000, "features": ["4-hour coverage", "1 Photographer", "High-res business headshots included"] },
+                { "name": "Gold", "price": 65000, "features": ["Full-day coverage", "2 Photographers", "Highlight event summary video"] },
+                { "name": "Platinum", "price": 110000, "features": ["Multi-day coverage", "3 Crew members", "Promotional marketing video wrap", "Full panel interviews documented"] }
+            ],
+            "Product Photography": [
+                { "name": "Silver", "price": 20000, "features": ["15 Studio product catalog shots", "White background", "High-end retouching"] },
+                { "name": "Gold", "price": 45000, "features": ["40 Creative lifestyle product shots", "Prop styling & custom lighting", "Commercial use license"] },
+                { "name": "Platinum", "price": 80000, "features": ["100 Product catalog + lifestyle shots", "Infographic overlays", "15-second product commercial video"] }
+            ],
+            "Drone Shoots": [
+                { "name": "Silver", "price": 25000, "features": ["2 hours aerial coverage", "Raw footage delivery", "4K Resolution"] },
+                { "name": "Gold", "price": 40000, "features": ["Half-day coverage (4 hours)", "Edited 3-min highlight visual compilation"] },
+                { "name": "Platinum", "price": 70000, "features": ["Full-day visual flight mapping", "Raw files + Edited promotional movie", "8K capabilities"] }
+            ],
+            "Cinematic Video Production": [
+                { "name": "Silver", "price": 50000, "features": ["1 Videographer", "Half-day shoot", "1-min promotional advertisement film"] },
+                { "name": "Gold", "price": 95000, "features": ["Full-day shoot", "Director + camera operator", "3-min Corporate profile/commercial film"] },
+                { "name": "Platinum", "price": 180000, "features": ["2 Days cinema camera package", "Storyboard direction, actors casting support", "Custom color grading & licensed audio"] }
+            ],
+            "Video Editing & Mixing": [
+                { "name": "Silver", "price": 15000, "features": ["Editing up to 30 mins footage", "Titles and standard transitions"] },
+                { "name": "Gold", "price": 30000, "features": ["Editing up to 2 hours raw footage", "Custom audio mixing & standard color grading"] },
+                { "name": "Platinum", "price": 60000, "features": ["Full feature cinema documentary edit", "VFX, advanced color grading, multirig sync"] }
+            ],
+            "Album Designing": [
+                { "name": "Silver", "price": 10000, "features": ["Standard design layout", "30 Pages", "Hardcover print"] },
+                { "name": "Gold", "price": 18000, "features": ["Bespoke design theme", "50 Pages", "Premium leather wrap cover"] },
+                { "name": "Platinum", "price": 30000, "features": ["Custom box case", "80 pages luxury metallic print paper", "Digital interactive replica copy"] }
+            ],
+            "Live Streaming Services": [
+                { "name": "Silver", "price": 25000, "features": ["Single camera setup", "YouTube/FB private link stream", "Raw capture file"] },
+                { "name": "Gold", "price": 45000, "features": ["Dual camera switcher setup", "Overlay designs, logos & titles", "High fidelity audio stream"] },
+                { "name": "Platinum", "price": 80000, "features": ["3-camera rig layout", "Local cellular bonded backup router", "Simulcast to multiple platforms", "Live chat support display"] }
+            ]
+        }
+        cursor.execute("INSERT INTO settings (key, value) VALUES (?, ?)", ("booking_packages", json.dumps(default_packages)))
+        
         # Add default Testimonials
         cursor.execute("INSERT INTO testimonials (id, client_name, rating, comment, service, avatar) VALUES (?, ?, ?, ?, ?, ?)",
                        (str(uuid.uuid4()), "Priya & Amit", 5, "Bhumi Photography made our wedding look like a fairy tale. The cinematic trailer was incredibly shot, and the team was extremely professional!", "Wedding Shoot", ""))
@@ -225,38 +294,7 @@ def init_db():
             cursor.execute("INSERT INTO portfolio (id, title, category, media_type, url, thumbnail, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?)",
                            (str(uuid.uuid4()), title, cat, mtype, url, thumb, feat))
 
-        # Add initial bookings to make analytics look good
-        # Let's add bookings for the past few months & current month to generate a nice chart
-        today = datetime.now()
-        booking_data = [
-            ("Wedding Photography", today + timedelta(days=20), "Gold", "Ramesh Kumar", "ramesh@gmail.com", "+919876500001", 120000, "confirmed"),
-            ("Pre-Wedding Shoot", today - timedelta(days=5), "Silver", "Sneha Patel", "sneha@gmail.com", "+919876500002", 45000, "completed"),
-            ("Maternity Shoot", today + timedelta(days=12), "Standard", "Karan Johar", "karan@gmail.com", "+919876500003", 25000, "pending"),
-            ("Product Photography", today - timedelta(days=25), "Platinum", "TechCorp Ltd", "info@techcorp.com", "+919876500004", 80000, "completed"),
-            ("Drone Shoots", today + timedelta(days=35), "Gold", "Green Developers", "build@green.com", "+919876500005", 55000, "confirmed"),
-            ("Birthday Events", today - timedelta(days=45), "Standard", "Rita Sen", "rita@gmail.com", "+919876500006", 18000, "completed"),
-            ("Corporate Events", today - timedelta(days=12), "Platinum", "Alpha Group", "admin@alpha.com", "+919876500007", 95000, "completed")
-        ]
-        
-        for service, date, pkg, name, email, phone, price, status in booking_data:
-            cursor.execute("""
-            INSERT INTO bookings (id, user_id, service_name, event_date, event_time, package_name, client_name, client_email, client_phone, price, status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (str(uuid.uuid4()), client_id if email == "client@gmail.com" else None, service, date.strftime('%Y-%m-%d'), "14:00", pkg, name, email, phone, price, status))
-
-        # Add initial enquiries
-        enquiries_data = [
-            ("Arun Prasad", "arun@yahoo.com", "+919000112233", "Wedding Package Custom Quote", "Hi, we are looking for a customized wedding package for a 3-day event in Bangalore in November. Please share custom quotes.", "unread", None),
-            ("Deepa Nair", "deepa@gmail.com", "+919000112234", "Newborn Baby Shoot Query", "Do you provide baby props and outfits for baby shoots, or do we need to bring them?", "unread", None),
-            ("Nikhil Mehta", "nikhil@mehta.com", "+919000112235", "Corporate Video Requirement", "Need corporate interview videos and drone footage for our office opening event. Quote requested.", "responding", "Called the client. Sending final quotation by email tomorrow.")
-        ]
-        
-        for name, email, phone, subject, msg, status, notes in enquiries_data:
-            cursor.execute("""
-            INSERT INTO enquiries (id, client_name, client_email, client_phone, subject, message, status, notes) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-            (str(uuid.uuid4()), name, email, phone, subject, msg, status, notes))
-
+        # Done seeding
         conn.commit()
     conn.close()
 
@@ -955,6 +993,28 @@ class APIRequestHandler(BaseHTTPRequestHandler):
             conn.commit()
             conn.close()
             self.send_success_json({"message": "Testimonial deleted successfully"})
+            return
+
+        # Delete Booking
+        elif path.startswith("/api/bookings/"):
+            booking_id = path.replace("/api/bookings/", "")
+            conn = get_db()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM bookings WHERE id = ?", (booking_id,))
+            conn.commit()
+            conn.close()
+            self.send_success_json({"message": "Booking deleted successfully"})
+            return
+
+        # Delete Enquiry
+        elif path.startswith("/api/enquiries/"):
+            enquiry_id = path.replace("/api/enquiries/", "")
+            conn = get_db()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM enquiries WHERE id = ?", (enquiry_id,))
+            conn.commit()
+            conn.close()
+            self.send_success_json({"message": "Enquiry deleted successfully"})
             return
 
         else:

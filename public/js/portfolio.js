@@ -9,7 +9,18 @@ const Portfolio = {
 
     async init() {
         this.setupLightbox();
+        this.bindFilterClicks();
         await this.loadGallery();
+    },
+
+    bindFilterClicks() {
+        const tabs = document.querySelectorAll("#portfolio-filters-tabs .filter-tab");
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                const category = tab.getAttribute("data-filter");
+                this.setFilter(category);
+            });
+        });
     },
 
     async loadGallery() {

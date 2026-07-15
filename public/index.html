@@ -518,6 +518,7 @@
                     <button class="admin-tab-btn" data-tab="admin-offers"><i class="fa-solid fa-tags"></i> Coupons & Offers</button>
                     <button class="admin-tab-btn" data-tab="admin-settings"><i class="fa-solid fa-sliders"></i> Site Settings</button>
                     <button class="admin-tab-btn" data-tab="admin-marquee"><i class="fa-solid fa-images"></i> Front Page Photos</button>
+                    <button class="admin-tab-btn" data-tab="admin-packages"><i class="fa-solid fa-hand-holding-dollar"></i> Service Packages</button>
                 </div>
 
                 <div class="admin-tab-content">
@@ -798,6 +799,31 @@
                         </div>
                     </div>
 
+                    <!-- ADMIN PACKAGES PANEL -->
+                    <div class="admin-tab-panel" id="admin-packages">
+                        <div class="card">
+                            <h2>Manage Service Packages & Pricing</h2>
+                            <p class="text-muted mb-4">Edit pricing packages (Silver, Gold, Platinum) and features list for all service categories. Select a service category below to start editing.</p>
+                            
+                            <div class="form-group mb-4">
+                                <label for="pkg-edit-service-select">Select Service Category</label>
+                                <select id="pkg-edit-service-select" class="form-control" style="background-color: var(--bg-card); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; font-weight: 500;">
+                                    <!-- Dynamic service names populated on load -->
+                                </select>
+                            </div>
+                            
+                            <hr class="my-4" style="border-color: var(--border-color);">
+                            
+                            <div id="packages-editor-container" style="display: flex; flex-direction: column; gap: 24px;">
+                                <!-- Silver, Gold, Platinum forms will render dynamically here -->
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button type="button" class="btn btn-primary" id="btn-save-packages">Save All Packages</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -1026,11 +1052,11 @@
             <div class="footer-links">
                 <h4>Quick Menu</h4>
                 <ul>
-                    <li><a href="#" onclick="app.navigateTo('home')">Home</a></li>
-                    <li><a href="#" onclick="app.navigateTo('services')">Services</a></li>
-                    <li><a href="#" onclick="app.navigateTo('portfolio')">Portfolio Gallery</a></li>
-                    <li><a href="#" onclick="app.navigateTo('booking')">Book Shoot</a></li>
-                    <li><a href="#" onclick="app.navigateTo('contact')">Get in Touch</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio Gallery</a></li>
+                    <li><a href="#booking">Book Shoot</a></li>
+                    <li><a href="#contact">Get in Touch</a></li>
                 </ul>
             </div>
             <div class="footer-contact">
@@ -1052,10 +1078,10 @@
     </a>
 
     <!-- APP SCRIPT LOADER -->
-    <script src="/js/api.js?v=1.0.4"></script>
-    <script src="/js/portfolio.js?v=1.0.4"></script>
-    <script src="/js/booking.js?v=1.0.4"></script>
-    <script src="/js/admin.js?v=1.0.4"></script>
-    <script src="/js/app.js?v=1.0.4"></script>
+    <script src="/js/api.js?v=1.0.7"></script>
+    <script src="/js/portfolio.js?v=1.0.7"></script>
+    <script src="/js/booking.js?v=1.0.7"></script>
+    <script src="/js/admin.js?v=1.0.7"></script>
+    <script src="/js/app.js?v=1.0.7"></script>
 </body>
 </html>

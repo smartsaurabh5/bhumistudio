@@ -238,6 +238,17 @@ const app = {
     async loadSettings() {
         try {
             this.settings = await API.get("/api/settings");
+            if (this.settings && this.settings.booking_packages) {
+                try {
+                    if (typeof this.settings.booking_packages === "string") {
+                        Booking.packages = JSON.parse(this.settings.booking_packages);
+                    } else {
+                        Booking.packages = this.settings.booking_packages;
+                    }
+                } catch(e) {
+                    console.error("Failed to parse dynamic booking packages", e);
+                }
+            }
             this.applyGlobalSettings();
         } catch (error) {
             console.error("Failed to load settings from server:", error);

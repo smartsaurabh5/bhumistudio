@@ -29,6 +29,7 @@ const Admin = {
             ]);
             await this.loadSettingsFormValues(app.settings);
             this.loadMarqueePhotosFormValues(app.settings);
+            this.initPackagesEditor();
         } catch (error) {
             console.error("Failed to load admin panels data:", error);
             app.showToast("Failed to compile administrator panel data.", "error");
@@ -101,6 +102,18 @@ const Admin = {
         const saveMarqueeBtn = document.getElementById("btn-save-marquee-photos");
         if (saveMarqueeBtn) {
             saveMarqueeBtn.addEventListener("click", () => this.handleSaveMarqueePhotos());
+        }
+
+        // Packages category selector change listener
+        const serviceSelect = document.getElementById("pkg-edit-service-select");
+        if (serviceSelect) {
+            serviceSelect.addEventListener("change", (e) => this.renderPackagesEditorForm(e.target.value));
+        }
+
+        // Save packages button listener
+        const savePackagesBtn = document.getElementById("btn-save-packages");
+        if (savePackagesBtn) {
+            savePackagesBtn.addEventListener("click", () => this.handleSavePackages());
         }
     },
 
@@ -255,16 +268,37 @@ const Admin = {
                         <span class="badge ${badgeClass}">${b.status.toUpperCase()}</span>
                     </td>
                     <td>
-                        <select class="form-control-sm" onchange="Admin.updateBookingStatus('${b.id}', this.value)">
-                            <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>Pending</option>
-                            <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>Confirm</option>
-                            <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>Complete</option>
-                            <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>Cancel</option>
-                        </select>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <select class="form-control-sm" onchange="Admin.updateBookingStatus('${b.id}', this.value)">
+                                <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>Confirm</option>
+                                <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>Complete</option>
+                                <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>Cancel</option>
+                            </select>
+                            <button class="btn btn-outline-sm text-danger" title="Delete Booking" onclick="Admin.deleteBooking('${b.id}')" style="padding: 6px 10px; border-radius: 6px;">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
         }).join("");
+    },
+
+    async deleteBooking(id) {
+        if (!confirm("Are you sure you want to delete this booking record? This action is irreversible.")) return;
+
+        try {
+            app.showLoader();
+            await API.delete(`/api/bookings/${id}`);
+            app.showToast("Booking deleted successfully!", "success");
+            await this.loadAllAdminData();
+        } catch (error) {
+            console.error("Failed to delete booking:", error);
+            app.showToast(error.message, "error");
+        } finally {
+            app.hideLoader();
+        }
     },
 
     async updateBookingStatus(id, newStatus) {
@@ -349,15 +383,36 @@ const Admin = {
                         <textarea class="form-control-sm" rows="2" style="width:100%; min-width:180px; font-size:11px;" placeholder="Add private admin action notes..." id="notes-${e.id}" onblur="Admin.saveEnquiryNotes('${e.id}')">${notesText}</textarea>
                     </td>
                     <td>
-                        <select class="form-control-sm" onchange="Admin.updateEnquiryStatus('${e.id}', this.value)">
-                            <option value="unread" ${e.status === 'unread' ? 'selected' : ''}>Unread</option>
-                            <option value="responding" ${e.status === 'responding' ? 'selected' : ''}>Responding</option>
-                            <option value="resolved" ${e.status === 'resolved' ? 'selected' : ''}>Resolved</option>
-                        </select>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <select class="form-control-sm" onchange="Admin.updateEnquiryStatus('${e.id}', this.value)">
+                                <option value="unread" ${e.status === 'unread' ? 'selected' : ''}>Unread</option>
+                                <option value="responding" ${e.status === 'responding' ? 'selected' : ''}>Responding</option>
+                                <option value="resolved" ${e.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                            </select>
+                            <button class="btn btn-outline-sm text-danger" title="Delete Enquiry" onclick="Admin.deleteEnquiry('${e.id}')" style="padding: 6px 10px; border-radius: 6px;">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
         }).join("");
+    },
+
+    async deleteEnquiry(id) {
+        if (!confirm("Are you sure you want to delete this enquiry message? This action is irreversible.")) return;
+
+        try {
+            app.showLoader();
+            await API.delete(`/api/enquiries/${id}`);
+            app.showToast("Enquiry message deleted successfully!", "success");
+            await this.loadAllAdminData();
+        } catch (error) {
+            console.error("Failed to delete enquiry:", error);
+            app.showToast(error.message, "error");
+        } finally {
+            app.hideLoader();
+        }
     },
 
     async updateEnquiryStatus(id, newStatus) {
@@ -756,5 +811,104 @@ const Admin = {
         
         link.click();
         document.body.removeChild(link);
+    },
+
+    initPackagesEditor() {
+        const serviceSelect = document.getElementById("pkg-edit-service-select");
+        if (!serviceSelect) return;
+
+        // Populate dropdown with all service categories from Booking.packages
+        const categories = Object.keys(Booking.packages);
+        serviceSelect.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join("");
+
+        // Render initial category selection (first one)
+        if (categories.length > 0) {
+            this.renderPackagesEditorForm(categories[0]);
+        }
+    },
+
+    renderPackagesEditorForm(category) {
+        const container = document.getElementById("packages-editor-container");
+        if (!container) return;
+
+        const packagesList = Booking.packages[category] || [];
+        
+        container.innerHTML = packagesList.map((pkg, idx) => {
+            const featuresText = pkg.features.join("\n");
+            return `
+                <div class="package-edit-card" style="background-color: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;" data-index="${idx}">
+                    <h3 style="color: var(--gold); font-size: 18px; margin-bottom: 16px;">${pkg.name} Package</h3>
+                    
+                    <div class="form-group mb-3">
+                        <label style="display:block; margin-bottom:6px; font-weight:600; font-size:13px; color:var(--text-muted);">Price (₹)</label>
+                        <input type="number" class="form-control pkg-edit-price" value="${pkg.price}" style="background-color: var(--bg-body); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; width: 100%;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display:block; margin-bottom:6px; font-weight:600; font-size:13px; color:var(--text-muted);">Package Features (one feature per line)</label>
+                        <textarea class="form-control pkg-edit-features" rows="5" style="background-color: var(--bg-body); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; width: 100%; font-family: inherit; font-size: 14px; line-height: 1.5; resize: vertical;" placeholder="Enter features (one per line)">${featuresText}</textarea>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    },
+
+    async handleSavePackages() {
+        const serviceSelect = document.getElementById("pkg-edit-service-select");
+        if (!serviceSelect) return;
+
+        const category = serviceSelect.value;
+        const container = document.getElementById("packages-editor-container");
+        if (!container) return;
+
+        const packageCards = container.querySelectorAll(".package-edit-card");
+        const updatedPackages = [];
+
+        packageCards.forEach(card => {
+            const idx = parseInt(card.getAttribute("data-index"));
+            const priceInput = card.querySelector(".pkg-edit-price");
+            const featuresTextarea = card.querySelector(".pkg-edit-features");
+
+            const originalPkg = Booking.packages[category][idx];
+            if (originalPkg) {
+                const updatedPrice = parseFloat(priceInput.value) || 0;
+                const updatedFeatures = featuresTextarea.value
+                    .split("\n")
+                    .map(f => f.trim())
+                    .filter(f => f !== "");
+
+                updatedPackages.push({
+                    name: originalPkg.name,
+                    price: updatedPrice,
+                    features: updatedFeatures
+                });
+            }
+        });
+
+        // Update local object
+        Booking.packages[category] = updatedPackages;
+
+        try {
+            app.showLoader();
+            
+            // Save the entire Booking.packages mapping dictionary to database settings!
+            await API.post("/api/settings", {
+                booking_packages: Booking.packages
+            });
+
+            // Reload local app settings cache
+            if (!app.settings) app.settings = {};
+            app.settings.booking_packages = Booking.packages;
+
+            // Re-render user views dynamically!
+            app.loadServicesList();
+
+            app.showToast(`Packages for "${category}" updated successfully!`, "success");
+        } catch (error) {
+            console.error("Failed to save packages settings:", error);
+            app.showToast("Failed to save packages settings.", "error");
+        } finally {
+            app.hideLoader();
+        }
     }
 };
