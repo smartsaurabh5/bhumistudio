@@ -39,6 +39,8 @@ const app = {
                     this.navigateTo(target);
                     // Close hamburger menu on mobile click
                     document.getElementById("nav-menu").classList.remove("active");
+                    const icon = document.getElementById("hamburger-btn").querySelector("i");
+                    if (icon) icon.className = "fa-solid fa-bars";
                 }
             });
         });
@@ -56,7 +58,16 @@ const app = {
         const hamburger = document.getElementById("hamburger-btn");
         if (hamburger) {
             hamburger.addEventListener("click", () => {
-                document.getElementById("nav-menu").classList.toggle("active");
+                const navMenu = document.getElementById("nav-menu");
+                navMenu.classList.toggle("active");
+                const icon = hamburger.querySelector("i");
+                if (icon) {
+                    if (navMenu.classList.contains("active")) {
+                        icon.className = "fa-solid fa-xmark";
+                    } else {
+                        icon.className = "fa-solid fa-bars";
+                    }
+                }
             });
         }
 
