@@ -958,21 +958,21 @@
                                 <i class="fa-solid fa-location-dot"></i>
                                 <div>
                                     <h4>Address</h4>
-                                    <p id="contact-lbl-address">Loading...</p>
+                                    <p id="contact-lbl-address">Near TD COLLEGE SOUTH, beside CYBER CRIME THANA POLICE LINE, Wazidpur, Jaunpur, Uttar Pradesh 222001</p>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <i class="fa-solid fa-phone"></i>
                                 <div>
                                     <h4>Call Us / WhatsApp</h4>
-                                    <p id="contact-lbl-phone">Loading...</p>
+                                    <p id="contact-lbl-phone">+91 7307245252</p>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <i class="fa-solid fa-envelope"></i>
                                 <div>
                                     <h4>Email Contact</h4>
-                                    <p id="contact-lbl-email">Loading...</p>
+                                    <p id="contact-lbl-email">admin@shivamstudio.com</p>
                                 </div>
                             </div>
                         </div>
@@ -1142,9 +1142,9 @@
             </div>
             <div class="footer-contact">
                 <h4>Shivam Studio HQ</h4>
-                <p id="footer-lbl-address">Loading...</p>
-                <p id="footer-lbl-phone">Loading...</p>
-                <p id="footer-lbl-email">Loading...</p>
+                <p id="footer-lbl-address">Near TD COLLEGE SOUTH, beside CYBER CRIME THANA POLICE LINE, Wazidpur, Jaunpur, Uttar Pradesh 222001</p>
+                <p id="footer-lbl-phone">+91 7307245252</p>
+                <p id="footer-lbl-email">admin@shivamstudio.com</p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1158,16 +1158,17 @@
         <span class="tooltip">WhatsApp Booking</span>
     </a>
 
-    <!-- API BASE URL CONFIG — Render backend URL for production -->
+    <!-- API BASE URL CONFIG -->
     <script>
-        window.API_BASE_URL = "https://bhumistudio.onrender.com";
+        // API Base URL: empty string for same-origin backend/localhost, or configurable via window.CUSTOM_API_URL
+        window.API_BASE_URL = (typeof window !== "undefined" && window.CUSTOM_API_URL) ? window.CUSTOM_API_URL : "";
     </script>
 
     <!-- APP SCRIPT LOADER -->
-    <script src="/js/api.js?v=1.0.9"></script>
-    <script src="/js/portfolio.js?v=1.0.9"></script>
-    <script src="/js/booking.js?v=1.0.9"></script>
-    <script src="/js/admin.js?v=1.0.9"></script>
-    <script src="/js/app.js?v=1.0.9"></script>
+    <script src="/js/api.js?v=1.1.0"></script>
+    <script src="/js/portfolio.js?v=1.1.0"></script>
+    <script src="/js/booking.js?v=1.1.0"></script>
+    <script src="/js/admin.js?v=1.1.0"></script>
+    <script src="/js/app.js?v=1.1.0"></script>
 </body>
 </html>

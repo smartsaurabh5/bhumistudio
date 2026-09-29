@@ -340,7 +340,6 @@ class APIRequestHandler(BaseHTTPRequestHandler):
             'https://shivam-studio.vercel.app',
             'https://shivamstudio-official.vercel.app',
             'https://shivamstudio-live.vercel.app',
-            'https://bhumi-studio-app.vercel.app',
             'http://localhost:8000',
             'http://127.0.0.1:8000',
         ]

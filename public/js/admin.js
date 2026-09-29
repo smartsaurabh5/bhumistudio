@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BHUMI STUDIO - ADMIN PANEL CONTROLLER & DATA VISUALIZATION
+   SHIVAM STUDIO - ADMIN PANEL CONTROLLER & DATA VISUALIZATION
    ========================================================================== */
 
 const Admin = {

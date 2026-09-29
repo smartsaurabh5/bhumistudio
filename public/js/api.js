@@ -1,21 +1,23 @@
 /* ==========================================================================
-   BHUMI STUDIO - REST API HANDLER & SESSION CLIENT
+   SHIVAM STUDIO - REST API HANDLER & SESSION CLIENT
    ========================================================================== */
 
 const API = {
     // API endpoint helper
-    baseUrl: (typeof window !== "undefined" && window.API_BASE_URL) ? window.API_BASE_URL : "", // Configurable via window.API_BASE_URL for cross-domain deployment
+    get baseUrl() {
+        return (typeof window !== "undefined" && window.API_BASE_URL) ? window.API_BASE_URL : "";
+    },
 
     getToken() {
-        return localStorage.getItem("bhumi_auth_token");
+        return localStorage.getItem("shivam_auth_token");
     },
 
     setToken(token) {
-        localStorage.setItem("bhumi_auth_token", token);
+        localStorage.setItem("shivam_auth_token", token);
     },
 
     clearToken() {
-        localStorage.removeItem("bhumi_auth_token");
+        localStorage.removeItem("shivam_auth_token");
     },
 
     // HTTP Helper Methods

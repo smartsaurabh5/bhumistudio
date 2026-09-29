@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BHUMI STUDIO - PORTFOLIO AND LIGHTBOX CONTROLLER
+   SHIVAM STUDIO - PORTFOLIO AND LIGHTBOX CONTROLLER
    ========================================================================== */
 
 const Portfolio = {

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BHUMI STUDIO - ONLINE BOOKING & TRACKING CONTROLLER
+   SHIVAM STUDIO - ONLINE BOOKING & TRACKING CONTROLLER
    ========================================================================== */
 
 const Booking = {

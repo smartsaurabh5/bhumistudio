@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BHUMI STUDIO - CORE SINGLE PAGE APP COORDINATOR
+   SHIVAM STUDIO - CORE SINGLE PAGE APP COORDINATOR
    ========================================================================== */
 
 const app = {
@@ -88,7 +88,7 @@ const app = {
         if (themeBtn) {
             themeBtn.addEventListener("click", () => this.toggleTheme());
             // Load saved theme
-            const savedTheme = localStorage.getItem("bhumi_theme") || "dark";
+            const savedTheme = localStorage.getItem("shivam_theme") || "dark";
             document.documentElement.setAttribute("data-theme", savedTheme);
             this.updateThemeIcon(savedTheme);
         }
@@ -828,7 +828,7 @@ Address: Near TD COLLEGE SOUTH, beside CYBER CRIME THANA POLICE LINE, Jaunpur
         const newTheme = currentTheme === "dark" ? "light" : "dark";
         
         document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("bhumi_theme", newTheme);
+        localStorage.setItem("shivam_theme", newTheme);
         this.updateThemeIcon(newTheme);
         this.showToast(`Switched to ${newTheme} theme.`, "success");
     },
