@@ -249,23 +249,26 @@ const app = {
     async loadSettings() {
         try {
             this.settings = await API.get("/api/settings");
-            if (this.settings && this.settings.booking_packages) {
-                try {
-                    if (typeof this.settings.booking_packages === "string") {
-                        Booking.packages = JSON.parse(this.settings.booking_packages);
-                    } else {
-                        Booking.packages = this.settings.booking_packages;
-                    }
-                } catch(e) {
-                    console.error("Failed to parse dynamic booking packages", e);
-                }
-            }
-            this.applyGlobalSettings();
         } catch (error) {
-            console.error("Failed to load settings from server:", error);
-            this.settings = {};
-            this.applyGlobalSettings();
+            try {
+                this.settings = (await API.cloud.getSettings()) || {};
+            } catch (e) {
+                this.settings = {};
+            }
         }
+        if (!this.settings) this.settings = {};
+        if (this.settings.booking_packages) {
+            try {
+                if (typeof this.settings.booking_packages === "string") {
+                    Booking.packages = JSON.parse(this.settings.booking_packages);
+                } else {
+                    Booking.packages = this.settings.booking_packages;
+                }
+            } catch(e) {
+                console.error("Failed to parse dynamic booking packages", e);
+            }
+        }
+        this.applyGlobalSettings();
     },
 
     applyGlobalSettings() {
@@ -686,12 +689,15 @@ const app = {
 
         try {
             this.showLoader();
-            // Try sending to server if available
+            // 1. Save to Firebase Realtime Cloud Database (Cross-Device Global Sync)
+            await API.cloud.saveEnquiry(newEnquiry);
+
+            // 2. Try sending to local/serverless backend if available
             await API.post("/api/enquiries", {
                 client_name, client_email, client_phone, subject, message
-            });
+            }).catch(() => {});
         } catch (apiErr) {
-            console.warn("Serverless API unavailable, saved locally:", apiErr.message);
+            console.warn("Cloud save note:", apiErr.message);
         } finally {
             this.hideLoader();
         }

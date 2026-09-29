@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SHIVAM STUDIO - REST API HANDLER & SESSION CLIENT
+   SHIVAM STUDIO - REST API & REALTIME CLOUD DATABASE CLIENT
    ========================================================================== */
 
 const API = {
@@ -20,7 +20,7 @@ const API = {
         localStorage.removeItem("shivam_auth_token");
     },
 
-    // HTTP Helper Methods
+    // HTTP Helper Methods for Local/Serverless Backend
     async request(path, method = "GET", body = null) {
         const url = `${this.baseUrl}${path}`;
         const headers = {
@@ -89,6 +89,154 @@ const API = {
         return this.request(path, "DELETE");
     },
 
+    // =========================================================================
+    // 🌐 FIREBASE REALTIME CLOUD DATABASE (Cross-Device Global Sync)
+    // =========================================================================
+    cloud: {
+        endpoint: "https://shivamstudio-586f8-default-rtdb.firebaseio.com",
+
+        // ENQUIRIES
+        async saveEnquiry(enquiry) {
+            try {
+                const res = await fetch(`${this.endpoint}/enquiries/${enquiry.id}.json`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(enquiry)
+                });
+                return await res.json();
+            } catch (err) {
+                console.warn("Cloud DB save enquiry failed:", err);
+                return enquiry;
+            }
+        },
+
+        async getEnquiries() {
+            try {
+                const res = await fetch(`${this.endpoint}/enquiries.json`);
+                if (!res.ok) return [];
+                const data = await res.json();
+                if (!data) return [];
+                return Object.keys(data).map(key => ({
+                    ...data[key],
+                    id: data[key].id || key
+                }));
+            } catch (err) {
+                console.warn("Cloud DB fetch enquiries failed:", err);
+                return [];
+            }
+        },
+
+        async updateEnquiry(id, updates) {
+            try {
+                await fetch(`${this.endpoint}/enquiries/${id}.json`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updates)
+                });
+            } catch (err) {
+                console.warn("Cloud DB update enquiry failed:", err);
+            }
+        },
+
+        async deleteEnquiry(id) {
+            try {
+                await fetch(`${this.endpoint}/enquiries/${id}.json`, {
+                    method: "DELETE"
+                });
+            } catch (err) {
+                console.warn("Cloud DB delete enquiry failed:", err);
+            }
+        },
+
+        // BOOKINGS
+        async saveBooking(booking) {
+            try {
+                const res = await fetch(`${this.endpoint}/bookings/${booking.id}.json`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(booking)
+                });
+                return await res.json();
+            } catch (err) {
+                console.warn("Cloud DB save booking failed:", err);
+                return booking;
+            }
+        },
+
+        async getBookings() {
+            try {
+                const res = await fetch(`${this.endpoint}/bookings.json`);
+                if (!res.ok) return [];
+                const data = await res.json();
+                if (!data) return [];
+                return Object.keys(data).map(key => ({
+                    ...data[key],
+                    id: data[key].id || key
+                }));
+            } catch (err) {
+                console.warn("Cloud DB fetch bookings failed:", err);
+                return [];
+            }
+        },
+
+        async getBookingById(id) {
+            try {
+                const res = await fetch(`${this.endpoint}/bookings/${id}.json`);
+                if (!res.ok) return null;
+                const data = await res.json();
+                return data;
+            } catch (err) {
+                console.warn("Cloud DB fetch single booking failed:", err);
+                return null;
+            }
+        },
+
+        async updateBooking(id, updates) {
+            try {
+                await fetch(`${this.endpoint}/bookings/${id}.json`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updates)
+                });
+            } catch (err) {
+                console.warn("Cloud DB update booking failed:", err);
+            }
+        },
+
+        async deleteBooking(id) {
+            try {
+                await fetch(`${this.endpoint}/bookings/${id}.json`, {
+                    method: "DELETE"
+                });
+            } catch (err) {
+                console.warn("Cloud DB delete booking failed:", err);
+            }
+        },
+
+        // GLOBAL SETTINGS SYNC
+        async saveSettings(settings) {
+            try {
+                await fetch(`${this.endpoint}/settings.json`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(settings)
+                });
+            } catch (err) {
+                console.warn("Cloud DB save settings failed:", err);
+            }
+        },
+
+        async getSettings() {
+            try {
+                const res = await fetch(`${this.endpoint}/settings.json`);
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (err) {
+                return null;
+            }
+        }
+    },
+
     // Authentication Actions
     async login(email, password) {
         const cleanEmail = (email || "").trim().toLowerCase();
@@ -111,7 +259,7 @@ const API = {
             console.warn("Backend API login returned error or unreachable:", error.message);
         }
 
-        // Static Hosting / Offline fallback for Demo / Admin logins
+        // Static Hosting / Cloud login verification for Admin
         if ((cleanEmail === "admin@shivamstudio.com" || cleanEmail === "saurabhpal4567@gmail.com") && cleanPass === "admin@123") {
             const adminUser = {
                 id: "admin-master-001",
@@ -159,7 +307,7 @@ const API = {
             console.warn("Registration endpoint unreachable, using client session fallback:", error.message);
         }
 
-        // Static Hosting / Offline fallback
+        // Static Hosting fallback
         const regUser = {
             id: "client-" + Date.now(),
             name: cleanName || "Client",

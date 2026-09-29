@@ -247,23 +247,27 @@ const Admin = {
        MANAGE BOOKINGS PANEL
        -------------------------------------------------------------------------- */
     async loadBookings() {
+        let cloudBookings = [];
+        try {
+            cloudBookings = (await API.cloud.getBookings()) || [];
+        } catch (e) {
+            console.warn("Cloud DB bookings fetch note:", e.message);
+        }
+
         let apiBookings = [];
         try {
             apiBookings = (await API.get("/api/bookings")) || [];
-        } catch (e) {
-            console.warn("Bookings API offline, using local store:", e.message);
-        }
+        } catch (e) {}
 
         let localBookings = [];
         try {
             localBookings = JSON.parse(localStorage.getItem("shivam_bookings_list") || "[]");
-        } catch (e) {
-            localBookings = [];
-        }
+        } catch (e) {}
 
         const mergedMap = new Map();
-        localBookings.forEach(item => mergedMap.set(item.id, item));
-        apiBookings.forEach(item => mergedMap.set(item.id, item));
+        localBookings.forEach(item => item && item.id && mergedMap.set(item.id, item));
+        apiBookings.forEach(item => item && item.id && mergedMap.set(item.id, item));
+        cloudBookings.forEach(item => item && item.id && mergedMap.set(item.id, item));
 
         this.bookings = Array.from(mergedMap.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
         this.renderBookingsTable(this.bookings);
@@ -334,6 +338,9 @@ const Admin = {
 
         try {
             app.showLoader();
+            // Delete from Firebase Cloud DB
+            await API.cloud.deleteBooking(id);
+
             try {
                 await API.delete(`/api/bookings/${id}`);
             } catch (e) {}
@@ -357,6 +364,9 @@ const Admin = {
 
     async updateBookingStatus(id, newStatus) {
         try {
+            // Update in Firebase Cloud DB
+            await API.cloud.updateBooking(id, { status: newStatus });
+
             try {
                 await API.put(`/api/bookings/${id}`, { status: newStatus });
             } catch (e) {}
@@ -406,27 +416,31 @@ const Admin = {
     },
 
     /* --------------------------------------------------------------------------
-       MANAGE ENQUIRIES PANEL
+       MANAGE ENQUIRIES PANEL (Live Cross-Device Firebase Sync)
        -------------------------------------------------------------------------- */
     async loadEnquiries() {
+        let cloudEnquiries = [];
+        try {
+            cloudEnquiries = (await API.cloud.getEnquiries()) || [];
+        } catch (e) {
+            console.warn("Cloud DB enquiries fetch note:", e.message);
+        }
+
         let apiEnquiries = [];
         try {
             apiEnquiries = (await API.get("/api/enquiries")) || [];
-        } catch (e) {
-            console.warn("Enquiries API offline, using local store:", e.message);
-        }
+        } catch (e) {}
 
         let localEnquiries = [];
         try {
             localEnquiries = JSON.parse(localStorage.getItem("shivam_enquiries_list") || "[]");
-        } catch (e) {
-            localEnquiries = [];
-        }
+        } catch (e) {}
 
         // Merge by ID
         const mergedMap = new Map();
-        localEnquiries.forEach(item => mergedMap.set(item.id, item));
-        apiEnquiries.forEach(item => mergedMap.set(item.id, item));
+        localEnquiries.forEach(item => item && item.id && mergedMap.set(item.id, item));
+        apiEnquiries.forEach(item => item && item.id && mergedMap.set(item.id, item));
+        cloudEnquiries.forEach(item => item && item.id && mergedMap.set(item.id, item));
 
         this.enquiries = Array.from(mergedMap.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
         this.renderEnquiriesTable();
@@ -490,6 +504,9 @@ const Admin = {
 
         try {
             app.showLoader();
+            // Delete from Firebase Cloud DB
+            await API.cloud.deleteEnquiry(id);
+
             try {
                 await API.delete(`/api/enquiries/${id}`);
             } catch (e) {}
@@ -513,6 +530,9 @@ const Admin = {
 
     async updateEnquiryStatus(id, newStatus) {
         try {
+            // Update in Firebase Cloud DB
+            await API.cloud.updateEnquiry(id, { status: newStatus });
+
             try {
                 await API.put(`/api/enquiries/${id}`, { status: newStatus });
             } catch (e) {}
@@ -537,6 +557,9 @@ const Admin = {
     async saveEnquiryNotes(id) {
         const textVal = document.getElementById(`notes-${id}`).value;
         try {
+            // Update in Firebase Cloud DB
+            await API.cloud.updateEnquiry(id, { notes: textVal });
+
             try {
                 await API.put(`/api/enquiries/${id}`, { notes: textVal });
             } catch (e) {}
@@ -765,8 +788,13 @@ const Admin = {
 
         try {
             app.showLoader();
-            await API.post("/api/settings", payload);
-            app.showToast("Site configuration saved successfully!", "success");
+            // 1. Save to Firebase Cloud Database
+            await API.cloud.saveSettings(payload);
+
+            // 2. Try sending to local/serverless backend
+            await API.post("/api/settings", payload).catch(() => {});
+
+            app.showToast("Site configuration saved successfully across all devices!", "success");
             await app.loadSettings(); // Reload global settings
         } catch (error) {
             app.showToast(error.message, "error");

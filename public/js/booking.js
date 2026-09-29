@@ -289,12 +289,16 @@ const Booking = {
         let confirmedId = bookingId;
         try {
             app.showLoader();
-            const res = await API.post("/api/bookings", bookingPayload);
+            // 1. Save to Firebase Realtime Cloud Database (Cross-Device Live Sync)
+            await API.cloud.saveBooking(bookingPayload);
+
+            // 2. Try sending to local/serverless backend if available
+            const res = await API.post("/api/bookings", bookingPayload).catch(() => null);
             if (res && res.booking_id) {
                 confirmedId = res.booking_id;
             }
         } catch (error) {
-            console.warn("Backend bookings API offline, saved locally:", error.message);
+            console.warn("Cloud save booking note:", error.message);
         } finally {
             app.hideLoader();
         }
@@ -367,10 +371,24 @@ const Booking = {
         try {
             app.showLoader();
             let booking = null;
+            // 1. Try Firebase Cloud DB
             try {
-                booking = await API.get(`/api/bookings/track/${trackId}`);
-            } catch (e) {
-                // Check local storage list
+                booking = await API.cloud.getBookingById(trackId);
+                if (!booking) {
+                    const allCloud = await API.cloud.getBookings();
+                    booking = allCloud.find(b => (b.id && b.id.toLowerCase() === trackId.toLowerCase()) || (b.id && b.id.includes(trackId)));
+                }
+            } catch (e) {}
+
+            // 2. Try Backend API
+            if (!booking) {
+                try {
+                    booking = await API.get(`/api/bookings/track/${trackId}`);
+                } catch (e) {}
+            }
+
+            // 3. Try Local storage
+            if (!booking) {
                 const localBookings = JSON.parse(localStorage.getItem("shivam_bookings_list") || "[]");
                 booking = localBookings.find(b => (b.id && b.id.toLowerCase() === trackId.toLowerCase()) || (b.id && b.id.includes(trackId)));
             }
