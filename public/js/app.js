@@ -273,7 +273,7 @@ const app = {
         
         // Change footer and contact labels
         const address = this.settings.address || "Near TD COLLEGE SOUTH, beside CYBER CRIME THANA POLICE LINE, Wazidpur, Jaunpur, Uttar Pradesh 222001";
-        const email = this.settings.contact_email || "admin@shivamstudio.com";
+        const email = this.settings.contact_email || "saurabhpal4567@gmail.com";
         const phone = this.settings.contact_phone || "7307245252";
         const studioName = this.settings.studio_name || "Shivam Studio and Photostate";
         const ownerName = this.settings.name || this.settings.owner_name || "Akhilesh Kumar Pal";

@@ -299,20 +299,30 @@ def init_db():
         # Done seeding
         conn.commit()
 
-    # Always ensure admin user and Shivam Studio settings exist
+    # Always ensure admin users and Shivam Studio settings exist
     admin_pass = hash_password("admin@123")
+    
+    # 1. Admin account: admin@shivamstudio.com
     cursor.execute("SELECT id FROM users WHERE email = ?", ("admin@shivamstudio.com",))
-    existing_admin = cursor.fetchone()
-    if existing_admin:
+    if cursor.fetchone():
         cursor.execute("UPDATE users SET password_hash = ?, role = 'admin', name = 'Akhilesh Kumar Pal', phone = '7307245252' WHERE email = ?",
                        (admin_pass, "admin@shivamstudio.com"))
     else:
         cursor.execute("INSERT INTO users (id, name, email, password_hash, role, phone) VALUES (?, ?, ?, ?, ?, ?)",
                        (str(uuid.uuid4()), "Akhilesh Kumar Pal", "admin@shivamstudio.com", admin_pass, "admin", "7307245252"))
 
+    # 2. Admin account: saurabhpal4567@gmail.com
+    cursor.execute("SELECT id FROM users WHERE email = ?", ("saurabhpal4567@gmail.com",))
+    if cursor.fetchone():
+        cursor.execute("UPDATE users SET password_hash = ?, role = 'admin', name = 'Saurabh Pal', phone = '7307245252' WHERE email = ?",
+                       (admin_pass, "saurabhpal4567@gmail.com"))
+    else:
+        cursor.execute("INSERT INTO users (id, name, email, password_hash, role, phone) VALUES (?, ?, ?, ?, ?, ?)",
+                       (str(uuid.uuid4()), "Saurabh Pal", "saurabhpal4567@gmail.com", admin_pass, "admin", "7307245252"))
+
     studio_settings = {
         "studio_name": "Shivam Studio and Photostate",
-        "contact_email": "admin@shivamstudio.com",
+        "contact_email": "saurabhpal4567@gmail.com",
         "contact_phone": "7307245252",
         "phone": "7307245252",
         "whatsapp": "917307245252",
@@ -669,8 +679,8 @@ class APIRequestHandler(BaseHTTPRequestHandler):
 
         # Auth Login
         elif path == "/api/auth/login":
-            email = body.get('email')
-            password = body.get('password')
+            email = str(body.get('email', '')).strip().lower()
+            password = str(body.get('password', ''))
             
             if not email or not password:
                 self.send_error_json(400, "Email and password are required")
@@ -678,7 +688,7 @@ class APIRequestHandler(BaseHTTPRequestHandler):
             
             conn = get_db()
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+            cursor.execute("SELECT * FROM users WHERE LOWER(TRIM(email)) = LOWER(?)", (email,))
             user = cursor.fetchone()
             
             if not user or not verify_password(user['password_hash'], password):

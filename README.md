@@ -66,8 +66,8 @@ e:\shivamstudio/
 
 You can test roles with these seeded accounts:
 
-- **Admin Account**:
-  - **Email**: `admin@shivamstudio.com`
+- **Admin Accounts**:
+  - **Email**: `saurabhpal4567@gmail.com` or `admin@shivamstudio.com`
   - **Password**: `admin@123`
   
 - **Customer Account**:
