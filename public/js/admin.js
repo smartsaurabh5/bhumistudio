@@ -626,11 +626,34 @@ const Admin = {
                 url = await API.uploadFile(file);
             }
 
-            await API.post("/api/portfolio", {
-                title, category, media_type, url, thumbnail, is_featured
-            });
+            const newId = "port-" + Date.now();
+            const newItem = {
+                id: newId,
+                title,
+                category,
+                media_type,
+                url,
+                thumbnail: thumbnail || (media_type === "video" ? "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" : ""),
+                is_featured,
+                created_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+            };
 
-            app.showToast("Visual uploaded successfully to gallery!", "success");
+            // 1. Save to Firebase Realtime Cloud Database (Global sync across all devices)
+            await API.cloud.savePortfolioItem(newItem);
+
+            // 2. Try sending to backend API if available
+            try {
+                await API.post("/api/portfolio", newItem);
+            } catch (err) {}
+
+            // 3. Update localStorage cache
+            try {
+                let localItems = JSON.parse(localStorage.getItem("shivam_portfolio_items") || "[]");
+                localItems.unshift(newItem);
+                localStorage.setItem("shivam_portfolio_items", JSON.stringify(localItems));
+            } catch (err) {}
+
+            app.showToast("Visual uploaded successfully across all devices!", "success");
             document.getElementById("admin-portfolio-form").reset();
             document.getElementById("port-source-url-group").classList.remove("hidden");
             document.getElementById("port-source-file-group").classList.add("hidden");

@@ -213,6 +213,47 @@ const API = {
             }
         },
 
+        // PORTFOLIO (Realtime Global Cloud Sync)
+        async savePortfolioItem(item) {
+            try {
+                const res = await fetch(`${this.endpoint}/portfolio/${item.id}.json`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(item)
+                });
+                return await res.json();
+            } catch (err) {
+                console.warn("Cloud DB save portfolio item failed:", err);
+                return item;
+            }
+        },
+
+        async getPortfolio() {
+            try {
+                const res = await fetch(`${this.endpoint}/portfolio.json`);
+                if (!res.ok) return [];
+                const data = await res.json();
+                if (!data) return [];
+                return Object.keys(data).map(key => ({
+                    ...data[key],
+                    id: data[key].id || key
+                }));
+            } catch (err) {
+                console.warn("Cloud DB fetch portfolio failed:", err);
+                return [];
+            }
+        },
+
+        async deletePortfolioItem(id) {
+            try {
+                await fetch(`${this.endpoint}/portfolio/${id}.json`, {
+                    method: "DELETE"
+                });
+            } catch (err) {
+                console.warn("Cloud DB delete portfolio failed:", err);
+            }
+        },
+
         // GLOBAL SETTINGS SYNC
         async saveSettings(settings) {
             try {
@@ -360,24 +401,77 @@ const API = {
         }
     },
 
-    // File Upload Handler (Base64 file converter)
-    async uploadFile(file) {
+    // Client-Side High-Quality Image Compressor (Resizes & converts to fast WebP/JPEG Base64)
+    async compressImage(file, maxDimension = 1400, quality = 0.82) {
         return new Promise((resolve, reject) => {
+            if (!file.type.startsWith("image/")) {
+                // If not an image (e.g. video), read as normal DataURL
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (err) => reject(err);
+                reader.readAsDataURL(file);
+                return;
+            }
+
             const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async () => {
-                try {
-                    const result = await this.post("/api/upload", {
-                        filename: file.name,
-                        content: reader.result // Send Base64 data url
-                    });
-                    resolve(result.url); // Return uploaded URL path e.g. "/uploads/..."
-                } catch (error) {
-                    // Static fallback: return the base64 data directly
-                    resolve(reader.result);
-                }
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxDimension || height > maxDimension) {
+                        if (width > height) {
+                            height = Math.round((height * maxDimension) / width);
+                            width = maxDimension;
+                        } else {
+                            width = Math.round((width * maxDimension) / height);
+                            height = maxDimension;
+                        }
+                    }
+
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Output as JPEG or WebP data URL
+                    try {
+                        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+                        resolve(dataUrl);
+                    } catch (err) {
+                        resolve(e.target.result);
+                    }
+                };
+                img.onerror = () => resolve(e.target.result);
+                img.src = e.target.result;
             };
-            reader.onerror = (error) => reject(error);
+            reader.onerror = (err) => reject(err);
+            reader.readAsDataURL(file);
         });
+    },
+
+    // File Upload Handler (Compresses local photo & uploads or returns Base64)
+    async uploadFile(file) {
+        try {
+            const compressedBase64 = await this.compressImage(file);
+            
+            // Try uploading to backend API if available
+            try {
+                const result = await this.post("/api/upload", {
+                    filename: file.name,
+                    content: compressedBase64
+                });
+                if (result && result.url) return result.url;
+            } catch (err) {
+                // Backend not available on static hosting, use compressed Base64 directly
+            }
+            
+            return compressedBase64;
+        } catch (error) {
+            console.error("File upload/compression failed:", error);
+            throw error;
+        }
     }
 };
