@@ -278,9 +278,18 @@ const app = {
         const studioName = this.settings.studio_name || "Shivam Studio and Photostate";
         const ownerName = this.settings.name || this.settings.owner_name || "Akhilesh Kumar Pal";
 
+        const googleMapsUrl = "https://www.google.com/maps/place/SHIVAM+STUDIO+AND+PHOTOSTATE,+PROFESSIONAL+VIDEOGRAPHY+,PHOTOGRAPY,+MIXING+LAB+AND+LIVE+TELCAST+SERVICES/@25.732457,82.6850472,16.79z/data=!4m14!1m7!3m6!1s0x39903bf5ed0898f5:0x1fcd75e2cbd06b05!2sSHIVAM+STUDIO+AND+PHOTOSTATE,+PROFESSIONAL+VIDEOGRAPHY+,PHOTOGRAPY,+MIXING+LAB+AND+LIVE+TELCAST+SERVICES!8m2!3d25.7325975!4d82.6853826!16s%2Fg%2F11zcxq8r37!3m5!1s0x39903bf5ed0898f5:0x1fcd75e2cbd06b05!8m2!3d25.7325975!4d82.6853826!16s%2Fg%2F11zcxq8r37?entry=ttu&g_ep=EgoyMDI2MDkyNy4xIKXMDSoASAFQAw%3D%3D";
+
         const setVal = (id, val) => {
             const el = document.getElementById(id);
-            if (el) el.textContent = val;
+            if (el) {
+                const a = el.querySelector("a");
+                if (a) {
+                    a.textContent = val;
+                } else {
+                    el.textContent = val;
+                }
+            }
         };
 
         try {
