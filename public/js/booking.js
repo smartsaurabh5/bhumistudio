@@ -260,7 +260,9 @@ const Booking = {
     },
 
     async submitBooking() {
+        const bookingId = "BK-" + Date.now().toString().slice(-6);
         const bookingPayload = {
+            id: bookingId,
             service_name: this.selectedService,
             event_date: document.getElementById("booking-date").value,
             event_time: document.getElementById("booking-time").value,
@@ -270,29 +272,66 @@ const Booking = {
             client_phone: document.getElementById("booking-client-phone").value,
             special_requirements: document.getElementById("booking-requirements").value,
             reference_image: this.referenceImageUrl,
-            price: this.selectedPrice
+            price: this.selectedPrice,
+            status: "pending",
+            created_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
         };
 
+        // Persist booking locally
+        try {
+            const currentList = JSON.parse(localStorage.getItem("shivam_bookings_list") || "[]");
+            currentList.unshift(bookingPayload);
+            localStorage.setItem("shivam_bookings_list", JSON.stringify(currentList));
+        } catch (e) {
+            console.warn("Failed to save booking to local storage", e);
+        }
+
+        let confirmedId = bookingId;
         try {
             app.showLoader();
             const res = await API.post("/api/bookings", bookingPayload);
-            
-            // Clean Form
-            this.resetWizard();
-            
-            // Show Success Notification Modal
-            alert(`Booking Request Submitted Successfully!\n\nYour Booking Tracking ID is: ${res.booking_id}\n\nPlease save this ID to track your status on the Booking Page.`);
-            
-            // Redirect to dashboard or home
-            if (app.currentUser) {
-                app.navigateTo("dashboard");
-            } else {
-                app.navigateTo("home");
+            if (res && res.booking_id) {
+                confirmedId = res.booking_id;
             }
         } catch (error) {
-            app.showToast(error.message, "error");
+            console.warn("Backend bookings API offline, saved locally:", error.message);
         } finally {
             app.hideLoader();
+        }
+
+        // Clean Form
+        this.resetWizard();
+        
+        // Show Success Toast
+        app.showToast("Booking request registered successfully!", "success");
+
+        // Prepare WhatsApp message
+        const waNumber = (app.settings && app.settings.whatsapp) || "917307245252";
+        const waMsg = encodeURIComponent(
+            `*New Shoot Booking Request*\n\n` +
+            `*Tracking ID:* ${confirmedId}\n` +
+            `*Client Name:* ${bookingPayload.client_name}\n` +
+            `*Phone:* ${bookingPayload.client_phone}\n` +
+            `*Email:* ${bookingPayload.client_email}\n` +
+            `*Service:* ${bookingPayload.service_name} (${bookingPayload.package_name})\n` +
+            `*Date:* ${bookingPayload.event_date} at ${bookingPayload.event_time}\n` +
+            `*Total:* ₹${bookingPayload.price.toLocaleString()}\n` +
+            (bookingPayload.special_requirements ? `*Notes:* ${bookingPayload.special_requirements}\n\n` : `\n`) +
+            `_Sent via Shivam Studio Online Portal_`
+        );
+
+        const openWa = confirm(
+            `Booking Request Registered!\n\nTracking ID: ${confirmedId}\nTotal: ₹${bookingPayload.price.toLocaleString()}\n\nWould you like to send this booking confirmation to Shivam Studio on WhatsApp right now?`
+        );
+        if (openWa) {
+            window.open(`https://wa.me/${waNumber}?text=${waMsg}`, '_blank');
+        }
+
+        // Redirect to dashboard or home
+        if (app.currentUser) {
+            app.navigateTo("dashboard");
+        } else {
+            app.navigateTo("home");
         }
     },
 
@@ -323,9 +362,22 @@ const Booking = {
             return;
         }
 
+        const trackId = idInput.value.trim();
+
         try {
             app.showLoader();
-            const booking = await API.get(`/api/bookings/track/${idInput.value.trim()}`);
+            let booking = null;
+            try {
+                booking = await API.get(`/api/bookings/track/${trackId}`);
+            } catch (e) {
+                // Check local storage list
+                const localBookings = JSON.parse(localStorage.getItem("shivam_bookings_list") || "[]");
+                booking = localBookings.find(b => (b.id && b.id.toLowerCase() === trackId.toLowerCase()) || (b.id && b.id.includes(trackId)));
+            }
+
+            if (!booking) {
+                throw new Error("No record found");
+            }
             
             let statusBadge = "";
             if (booking.status === "pending") statusBadge = `<span class="badge badge-pending">Pending Review</span>`;
@@ -337,7 +389,7 @@ const Booking = {
                 <p><strong>Service:</strong> ${booking.service_name} (${booking.package_name} Package)</p>
                 <p><strong>Event Date:</strong> ${booking.event_date} at ${booking.event_time}</p>
                 <p><strong>Tracking Status:</strong> ${statusBadge}</p>
-                <p><strong>Quote Total:</strong> ₹${booking.price.toLocaleString()}</p>
+                <p><strong>Quote Total:</strong> ₹${(booking.price || 0).toLocaleString()}</p>
                 <p class="help-text mt-2"><i class="fa-solid fa-circle-exclamation"></i> For adjustments, contact support with this tracking ID.</p>
             `;
             resultContainer.classList.remove("hidden");

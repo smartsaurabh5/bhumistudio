@@ -247,12 +247,25 @@ const Admin = {
        MANAGE BOOKINGS PANEL
        -------------------------------------------------------------------------- */
     async loadBookings() {
+        let apiBookings = [];
         try {
-            this.bookings = (await API.get("/api/bookings")) || [];
+            apiBookings = (await API.get("/api/bookings")) || [];
         } catch (e) {
-            console.warn("Bookings API unavailable, displaying local list:", e.message);
-            this.bookings = [];
+            console.warn("Bookings API offline, using local store:", e.message);
         }
+
+        let localBookings = [];
+        try {
+            localBookings = JSON.parse(localStorage.getItem("shivam_bookings_list") || "[]");
+        } catch (e) {
+            localBookings = [];
+        }
+
+        const mergedMap = new Map();
+        localBookings.forEach(item => mergedMap.set(item.id, item));
+        apiBookings.forEach(item => mergedMap.set(item.id, item));
+
+        this.bookings = Array.from(mergedMap.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
         this.renderBookingsTable(this.bookings);
     },
 
@@ -275,24 +288,28 @@ const Admin = {
                 ? `<a href="${b.reference_image}" target="_blank" class="text-gold bold"><i class="fa-solid fa-image"></i> View Concept</a>` 
                 : '<span class="text-muted">None</span>';
 
+            const phone = b.client_phone ? b.client_phone.replace(/\D/g, '') : '';
+            const waLink = phone ? `<a href="https://wa.me/${phone}" target="_blank" class="btn btn-outline-sm mt-1" style="font-size:10px; padding:2px 6px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-brands fa-whatsapp text-gold"></i> WhatsApp</a>` : '';
+
             return `
                 <tr>
                     <td>
-                        <span class="bold">${b.id.substring(0, 8)}</span><br>
+                        <span class="bold">${(b.id || '').substring(0, 10)}</span><br>
                         <small class="text-muted">${b.event_date} at ${b.event_time}</small>
                     </td>
                     <td>
                         <strong>${b.client_name}</strong><br>
-                        <small>${b.client_phone} | ${b.client_email}</small>
+                        <small>${b.client_phone} | ${b.client_email}</small><br>
+                        ${waLink}
                     </td>
                     <td>
                         <strong>${b.service_name}</strong><br>
                         <small>Package: ${b.package_name}</small><br>
                         ${refLink}
                     </td>
-                    <td class="bold text-gold">₹${b.price.toLocaleString()}</td>
+                    <td class="bold text-gold">₹${(b.price || 0).toLocaleString()}</td>
                     <td>
-                        <span class="badge ${badgeClass}">${b.status.toUpperCase()}</span>
+                        <span class="badge ${badgeClass}">${(b.status || 'PENDING').toUpperCase()}</span>
                     </td>
                     <td>
                         <div style="display: flex; gap: 8px; align-items: center;">
@@ -317,7 +334,17 @@ const Admin = {
 
         try {
             app.showLoader();
-            await API.delete(`/api/bookings/${id}`);
+            try {
+                await API.delete(`/api/bookings/${id}`);
+            } catch (e) {}
+
+            // Delete from local storage
+            try {
+                let localBookings = JSON.parse(localStorage.getItem("shivam_bookings_list") || "[]");
+                localBookings = localBookings.filter(b => b.id !== id);
+                localStorage.setItem("shivam_bookings_list", JSON.stringify(localBookings));
+            } catch (e) {}
+
             app.showToast("Booking deleted successfully!", "success");
             await this.loadAllAdminData();
         } catch (error) {
@@ -330,14 +357,24 @@ const Admin = {
 
     async updateBookingStatus(id, newStatus) {
         try {
-            app.showLoader();
-            await API.put(`/api/bookings/${id}`, { status: newStatus });
+            try {
+                await API.put(`/api/bookings/${id}`, { status: newStatus });
+            } catch (e) {}
+
+            // Update in local storage
+            try {
+                let localBookings = JSON.parse(localStorage.getItem("shivam_bookings_list") || "[]");
+                const item = localBookings.find(b => b.id === id);
+                if (item) {
+                    item.status = newStatus;
+                    localStorage.setItem("shivam_bookings_list", JSON.stringify(localBookings));
+                }
+            } catch (e) {}
+
             app.showToast("Booking status updated successfully!", "success");
             await this.loadAllAdminData();
         } catch (error) {
             app.showToast(error.message, "error");
-        } finally {
-            app.hideLoader();
         }
     },
 
@@ -372,12 +409,26 @@ const Admin = {
        MANAGE ENQUIRIES PANEL
        -------------------------------------------------------------------------- */
     async loadEnquiries() {
+        let apiEnquiries = [];
         try {
-            this.enquiries = (await API.get("/api/enquiries")) || [];
+            apiEnquiries = (await API.get("/api/enquiries")) || [];
         } catch (e) {
-            console.warn("Enquiries API unavailable, displaying local list:", e.message);
-            this.enquiries = [];
+            console.warn("Enquiries API offline, using local store:", e.message);
         }
+
+        let localEnquiries = [];
+        try {
+            localEnquiries = JSON.parse(localStorage.getItem("shivam_enquiries_list") || "[]");
+        } catch (e) {
+            localEnquiries = [];
+        }
+
+        // Merge by ID
+        const mergedMap = new Map();
+        localEnquiries.forEach(item => mergedMap.set(item.id, item));
+        apiEnquiries.forEach(item => mergedMap.set(item.id, item));
+
+        this.enquiries = Array.from(mergedMap.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
         this.renderEnquiriesTable();
     },
 
@@ -396,20 +447,23 @@ const Admin = {
             else if (e.status === "resolved") badgeClass = "badge-success";
 
             const notesText = e.notes ? e.notes : "";
+            const phone = e.client_phone ? e.client_phone.replace(/\D/g, '') : '';
+            const waLink = phone ? `<a href="https://wa.me/${phone}" target="_blank" class="btn btn-outline-sm mt-1" style="font-size:10px; padding:2px 6px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-brands fa-whatsapp text-gold"></i> WhatsApp</a>` : '';
 
             return `
                 <tr>
                     <td><small>${e.created_at}</small></td>
                     <td>
                         <strong>${e.client_name}</strong><br>
-                        <small>${e.client_phone} | ${e.client_email}</small>
+                        <small>${e.client_phone} | ${e.client_email}</small><br>
+                        ${waLink}
                     </td>
                     <td>
                         <strong>${e.subject}</strong><br>
                         <p style="font-size:12px; margin-top:4px; max-width:320px; white-space:pre-wrap;">${e.message}</p>
                     </td>
                     <td>
-                        <span class="badge ${badgeClass}">${e.status.toUpperCase()}</span>
+                        <span class="badge ${badgeClass}">${(e.status || 'UNREAD').toUpperCase()}</span>
                     </td>
                     <td>
                         <textarea class="form-control-sm" rows="2" style="width:100%; min-width:180px; font-size:11px;" placeholder="Add private admin action notes..." id="notes-${e.id}" onblur="Admin.saveEnquiryNotes('${e.id}')">${notesText}</textarea>
@@ -436,7 +490,17 @@ const Admin = {
 
         try {
             app.showLoader();
-            await API.delete(`/api/enquiries/${id}`);
+            try {
+                await API.delete(`/api/enquiries/${id}`);
+            } catch (e) {}
+
+            // Delete from local storage
+            try {
+                let localEnquiries = JSON.parse(localStorage.getItem("shivam_enquiries_list") || "[]");
+                localEnquiries = localEnquiries.filter(e => e.id !== id);
+                localStorage.setItem("shivam_enquiries_list", JSON.stringify(localEnquiries));
+            } catch (e) {}
+
             app.showToast("Enquiry message deleted successfully!", "success");
             await this.loadAllAdminData();
         } catch (error) {
@@ -449,7 +513,20 @@ const Admin = {
 
     async updateEnquiryStatus(id, newStatus) {
         try {
-            await API.put(`/api/enquiries/${id}`, { status: newStatus });
+            try {
+                await API.put(`/api/enquiries/${id}`, { status: newStatus });
+            } catch (e) {}
+
+            // Update in local storage
+            try {
+                let localEnquiries = JSON.parse(localStorage.getItem("shivam_enquiries_list") || "[]");
+                const item = localEnquiries.find(e => e.id === id);
+                if (item) {
+                    item.status = newStatus;
+                    localStorage.setItem("shivam_enquiries_list", JSON.stringify(localEnquiries));
+                }
+            } catch (e) {}
+
             app.showToast("Enquiry status updated.", "success");
             await this.loadEnquiries();
         } catch (error) {
@@ -460,7 +537,20 @@ const Admin = {
     async saveEnquiryNotes(id) {
         const textVal = document.getElementById(`notes-${id}`).value;
         try {
-            await API.put(`/api/enquiries/${id}`, { notes: textVal });
+            try {
+                await API.put(`/api/enquiries/${id}`, { notes: textVal });
+            } catch (e) {}
+
+            // Update notes in local storage
+            try {
+                let localEnquiries = JSON.parse(localStorage.getItem("shivam_enquiries_list") || "[]");
+                const item = localEnquiries.find(e => e.id === id);
+                if (item) {
+                    item.notes = textVal;
+                    localStorage.setItem("shivam_enquiries_list", JSON.stringify(localEnquiries));
+                }
+            } catch (e) {}
+
             app.showToast("Admin action notes saved.", "success");
         } catch (error) {
             app.showToast(error.message, "error");

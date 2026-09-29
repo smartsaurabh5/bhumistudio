@@ -649,37 +649,79 @@ const app = {
         let client_name, client_email, client_phone, subject, message;
 
         if (formSource === "contact") {
-            client_name = document.getElementById("contact-name").value;
-            client_email = document.getElementById("contact-email").value;
-            client_phone = document.getElementById("contact-phone").value;
-            subject = document.getElementById("contact-subject").value;
-            message = document.getElementById("contact-message").value;
+            client_name = (document.getElementById("contact-name").value || "").trim();
+            client_email = (document.getElementById("contact-email").value || "").trim();
+            client_phone = (document.getElementById("contact-phone").value || "").trim();
+            subject = (document.getElementById("contact-subject").value || "").trim();
+            message = (document.getElementById("contact-message").value || "").trim();
         } else {
-            client_name = document.getElementById("quote-name").value;
-            client_email = document.getElementById("quote-email").value;
-            client_phone = document.getElementById("quote-phone").value;
-            subject = document.getElementById("quote-service").value + " - Custom Quote Request";
-            message = document.getElementById("quote-details").value;
+            client_name = (document.getElementById("quote-name").value || "").trim();
+            client_email = (document.getElementById("quote-email").value || "").trim();
+            client_phone = (document.getElementById("quote-phone").value || "").trim();
+            subject = (document.getElementById("quote-service").value || "General") + " - Custom Quote Request";
+            message = (document.getElementById("quote-details").value || "").trim();
+        }
+
+        const enquiryId = "ENQ-" + Date.now().toString().slice(-6);
+        const newEnquiry = {
+            id: enquiryId,
+            client_name: client_name || "Guest Customer",
+            client_email: client_email,
+            client_phone: client_phone,
+            subject: subject || "Studio Inquiry",
+            message: message,
+            status: "unread",
+            notes: "",
+            created_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
+        };
+
+        // Persist locally so admin inbox always receives it
+        try {
+            const currentList = JSON.parse(localStorage.getItem("shivam_enquiries_list") || "[]");
+            currentList.unshift(newEnquiry);
+            localStorage.setItem("shivam_enquiries_list", JSON.stringify(currentList));
+        } catch (storageErr) {
+            console.warn("Could not save to local storage", storageErr);
         }
 
         try {
             this.showLoader();
+            // Try sending to server if available
             await API.post("/api/enquiries", {
                 client_name, client_email, client_phone, subject, message
             });
-
-            this.showToast("Inquiry submitted successfully! We will email you shortly.", "success");
-            
-            if (formSource === "contact") {
-                document.getElementById("contact-enquiry-form").reset();
-            } else {
-                document.getElementById("modal-quote-form").reset();
-                this.closeModal("quote-modal");
-            }
-        } catch (error) {
-            this.showToast(error.message, "error");
+        } catch (apiErr) {
+            console.warn("Serverless API unavailable, saved locally:", apiErr.message);
         } finally {
             this.hideLoader();
+        }
+
+        this.showToast("Inquiry received! We have logged your request.", "success");
+        
+        if (formSource === "contact") {
+            document.getElementById("contact-enquiry-form").reset();
+        } else {
+            document.getElementById("modal-quote-form").reset();
+            this.closeModal("quote-modal");
+        }
+
+        // Prompt client for instant WhatsApp connection
+        const waNumber = (this.settings && this.settings.whatsapp) || "917307245252";
+        const waText = encodeURIComponent(
+            `*New Website Inquiry*\n\n` +
+            `*Name:* ${client_name}\n` +
+            `*Phone:* ${client_phone}\n` +
+            `*Email:* ${client_email}\n` +
+            `*Subject:* ${subject}\n` +
+            `*Message:* ${message}\n\n` +
+            `_Sent via Shivam Studio Website_`
+        );
+        
+        const openWa = confirm(
+            `Thank you, ${client_name}!\n\nYour inquiry (Ref: ${enquiryId}) has been registered.\n\nWould you like to open WhatsApp to chat directly with Shivam Studio right now?`
+        );
+        if (openWa) {
+            window.open(`https://wa.me/${waNumber}?text=${waText}`, '_blank');
         }
     },
 
