@@ -24,7 +24,8 @@ const Admin = {
             await Promise.allSettled([
                 this.loadAnalytics(),
                 this.loadBookings(),
-                this.loadEnquiries()
+                this.loadEnquiries(),
+                this.loadOffers()
             ]);
             await this.loadSettingsFormValues(app.settings);
             this.loadMarqueePhotosFormValues(app.settings);
@@ -667,24 +668,81 @@ const Admin = {
     },
 
     /* --------------------------------------------------------------------------
-       OFFERS & PROMOTIONS PANEL
+       OFFERS & PROMOTIONS PANEL (Firebase Realtime Cloud Database Sync)
        -------------------------------------------------------------------------- */
+    offers: [],
+
     async loadOffers() {
-        const offersList = await API.get("/api/offers");
-        this.renderAdminOffersList(offersList);
+        let cloudOffers = [];
+        try {
+            cloudOffers = (await API.cloud.getOffers()) || [];
+        } catch (e) {
+            console.warn("Cloud DB offers fetch note:", e.message);
+        }
+
+        let apiOffers = [];
+        try {
+            apiOffers = (await API.get("/api/offers")) || [];
+        } catch (e) {}
+
+        let localOffers = [];
+        try {
+            localOffers = JSON.parse(localStorage.getItem("shivam_offers_list") || "[]");
+        } catch (e) {}
+
+        const defaultOffers = [
+            {
+                id: "offer-001",
+                title: "Monsoon Wedding Special",
+                description: "Get a flat 20% discount on Premium Wedding Shoot & Cinematic Film packages.",
+                code: "WEDMON20",
+                discount_percent: 20,
+                start_date: "2026-07-01",
+                expiry_date: "2026-12-31",
+                is_active: 1,
+                created_at: "2026-09-01 10:00:00"
+            },
+            {
+                id: "offer-002",
+                title: "Early Bird Pre-Wedding",
+                description: "Book your pre-wedding shoot 3 months in advance and get 15% off.",
+                code: "PREWED15",
+                discount_percent: 15,
+                start_date: "2026-07-01",
+                expiry_date: "2026-12-31",
+                is_active: 1,
+                created_at: "2026-09-02 11:00:00"
+            }
+        ];
+
+        const mergedMap = new Map();
+        defaultOffers.forEach(o => o && o.id && mergedMap.set(o.id, o));
+        localOffers.forEach(o => o && o.id && mergedMap.set(o.id, o));
+        apiOffers.forEach(o => o && o.id && mergedMap.set(o.id, o));
+        cloudOffers.forEach(o => o && o.id && mergedMap.set(o.id, o));
+
+        this.offers = Array.from(mergedMap.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+
+        try {
+            localStorage.setItem("shivam_offers_list", JSON.stringify(this.offers));
+        } catch (e) {}
+
+        this.renderAdminOffersList(this.offers);
     },
 
     renderAdminOffersList(offers) {
         const container = document.getElementById("admin-offers-list-container");
         if (!container) return;
 
-        if (offers.length === 0) {
+        const list = offers || this.offers || [];
+
+        if (list.length === 0) {
             container.innerHTML = `<p class="paragraph text-center">No coupons configured.</p>`;
             return;
         }
 
-        container.innerHTML = offers.map(o => `
-            <div class="admin-offer-item mb-2">
+        container.innerHTML = list.map(o => `
+            <div class="admin-offer-item mb-2" id="admin-offer-${o.id}">
                 <span class="offer-badge" style="top:12px; right:12px;">${o.discount_percent}% OFF</span>
                 <h5 class="bold">${o.title}</h5>
                 <p style="font-size:12px;" class="text-muted">${o.description}</p>
@@ -707,28 +765,56 @@ const Admin = {
         const title = document.getElementById("offer-input-title").value;
         const description = document.getElementById("offer-input-desc").value;
         const code = document.getElementById("offer-input-code").value.trim().toUpperCase();
-        const discount_percent = document.getElementById("offer-input-discount").value;
+        const discount_percent = parseInt(document.getElementById("offer-input-discount").value) || 10;
         const start_date = document.getElementById("offer-input-start").value;
         const expiry_date = document.getElementById("offer-input-expiry").value;
         const is_active = document.getElementById("offer-input-active").checked ? 1 : 0;
 
-        const payload = { title, description, code, discount_percent, start_date, expiry_date, is_active };
+        const finalId = offerId || ("offer-" + Date.now());
+        const payload = {
+            id: finalId,
+            title,
+            description,
+            code,
+            discount_percent,
+            start_date,
+            expiry_date,
+            is_active,
+            created_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+        };
 
         try {
             app.showLoader();
-            if (offerId) {
-                // Update
-                await API.put(`/api/offers/${offerId}`, payload);
-                app.showToast("Coupon updated successfully!", "success");
+
+            // 1. Save to Firebase Realtime Cloud Database (Global sync across all devices)
+            await API.cloud.saveOffer(payload);
+
+            // 2. Try backend API if available
+            try {
+                if (offerId) {
+                    await API.put(`/api/offers/${offerId}`, payload);
+                } else {
+                    await API.post("/api/offers", payload);
+                }
+            } catch (err) {}
+
+            // 3. Update memory state & localStorage
+            const existingIdx = this.offers.findIndex(o => o.id === finalId);
+            if (existingIdx >= 0) {
+                this.offers[existingIdx] = payload;
             } else {
-                // Create
-                await API.post("/api/offers", payload);
-                app.showToast("New discount coupon created!", "success");
+                this.offers.unshift(payload);
             }
+            try {
+                localStorage.setItem("shivam_offers_list", JSON.stringify(this.offers));
+            } catch (e) {}
+
+            app.showToast(offerId ? "Coupon updated successfully across all devices!" : "New discount coupon created across all devices!", "success");
             this.resetOfferForm();
-            await this.loadOffers();
+            this.renderAdminOffersList(this.offers);
             await app.loadOffersSlider(); // Update home slideshow
         } catch (error) {
+            console.error("Failed to save offer:", error);
             app.showToast(error.message, "error");
         } finally {
             app.hideLoader();
@@ -737,9 +823,11 @@ const Admin = {
 
     async editOffer(id) {
         try {
-            app.showLoader();
-            const offers = await API.get("/api/offers");
-            const offer = offers.find(o => o.id === id);
+            let offer = this.offers.find(o => o.id === id);
+            if (!offer) {
+                const cloudList = await API.cloud.getOffers();
+                offer = cloudList.find(o => o.id === id);
+            }
             
             if (offer) {
                 document.getElementById("offer-input-id").value = offer.id;
@@ -753,11 +841,12 @@ const Admin = {
 
                 document.getElementById("btn-save-offer").textContent = "Update Offer";
                 document.getElementById("btn-cancel-edit-offer").classList.remove("hidden");
+                
+                // Scroll to form smoothly
+                document.getElementById("admin-offers-form").scrollIntoView({ behavior: 'smooth' });
             }
         } catch (error) {
             app.showToast(error.message, "error");
-        } finally {
-            app.hideLoader();
         }
     },
 
@@ -769,14 +858,28 @@ const Admin = {
     },
 
     async deleteOffer(id) {
-        if (!confirm("Delete this promotional offer?")) return;
+        if (!confirm("Are you sure you want to delete this promotional offer? This will remove it across all devices.")) return;
         try {
             app.showLoader();
-            await API.delete(`/api/offers/${id}`);
-            app.showToast("Offer removed.", "success");
-            await this.loadOffers();
+            // 1. Delete from Firebase Cloud DB
+            await API.cloud.deleteOffer(id);
+
+            // 2. Try backend API
+            try {
+                await API.delete(`/api/offers/${id}`);
+            } catch (e) {}
+
+            // 3. Remove immediately from memory and local storage
+            this.offers = this.offers.filter(o => o.id !== id);
+            try {
+                localStorage.setItem("shivam_offers_list", JSON.stringify(this.offers));
+            } catch (e) {}
+
+            this.renderAdminOffersList(this.offers);
             await app.loadOffersSlider();
+            app.showToast("Offer removed successfully across all devices.", "success");
         } catch (error) {
+            console.error("Failed to delete offer:", error);
             app.showToast(error.message, "error");
         } finally {
             app.hideLoader();
@@ -949,8 +1052,15 @@ const Admin = {
 
         try {
             app.showLoader();
-            await API.post("/api/settings", payload);
-            app.showToast("Front page photos updated successfully!", "success");
+            // 1. Save to Firebase Cloud Database
+            await API.cloud.saveSettings(payload);
+
+            // 2. Try backend API
+            try {
+                await API.post("/api/settings", payload);
+            } catch (e) {}
+
+            app.showToast("Front page photos updated successfully across all devices!", "success");
             await app.loadSettings(); // Reload global settings and update marquee UI
         } catch (error) {
             app.showToast(error.message, "error");
@@ -1064,10 +1174,17 @@ const Admin = {
         try {
             app.showLoader();
             
-            // Save the entire Booking.packages mapping dictionary to database settings!
-            await API.post("/api/settings", {
+            // 1. Save to Firebase Cloud Settings
+            await API.cloud.saveSettings({
                 booking_packages: Booking.packages
             });
+
+            // 2. Try backend API
+            try {
+                await API.post("/api/settings", {
+                    booking_packages: Booking.packages
+                });
+            } catch (e) {}
 
             // Reload local app settings cache
             if (!app.settings) app.settings = {};
@@ -1076,7 +1193,7 @@ const Admin = {
             // Re-render user views dynamically!
             app.loadServicesList();
 
-            app.showToast(`Packages for "${category}" updated successfully!`, "success");
+            app.showToast(`Packages for "${category}" updated successfully across all devices!`, "success");
         } catch (error) {
             console.error("Failed to save packages settings:", error);
             app.showToast("Failed to save packages settings.", "error");

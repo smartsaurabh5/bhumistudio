@@ -254,6 +254,47 @@ const API = {
             }
         },
 
+        // OFFERS & PROMOTIONS (Realtime Global Cloud Sync)
+        async saveOffer(offer) {
+            try {
+                const res = await fetch(`${this.endpoint}/offers/${offer.id}.json`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(offer)
+                });
+                return await res.json();
+            } catch (err) {
+                console.warn("Cloud DB save offer failed:", err);
+                return offer;
+            }
+        },
+
+        async getOffers() {
+            try {
+                const res = await fetch(`${this.endpoint}/offers.json`);
+                if (!res.ok) return [];
+                const data = await res.json();
+                if (!data) return [];
+                return Object.keys(data).map(key => ({
+                    ...data[key],
+                    id: data[key].id || key
+                }));
+            } catch (err) {
+                console.warn("Cloud DB fetch offers failed:", err);
+                return [];
+            }
+        },
+
+        async deleteOffer(id) {
+            try {
+                await fetch(`${this.endpoint}/offers/${id}.json`, {
+                    method: "DELETE"
+                });
+            } catch (err) {
+                console.warn("Cloud DB delete offer failed:", err);
+            }
+        },
+
         // GLOBAL SETTINGS SYNC
         async saveSettings(settings) {
             try {

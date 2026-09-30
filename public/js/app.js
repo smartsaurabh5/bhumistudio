@@ -382,8 +382,24 @@ const app = {
         if (!carousel) return;
 
         try {
-            const offers = await API.get("/api/offers");
-            const activeOffers = offers.filter(o => o.is_active === 1);
+            let offers = [];
+            try {
+                offers = (await API.cloud.getOffers()) || [];
+            } catch (err) {}
+
+            if (!offers || offers.length === 0) {
+                try {
+                    offers = (await API.get("/api/offers")) || [];
+                } catch (err) {}
+            }
+
+            if (!offers || offers.length === 0) {
+                try {
+                    offers = JSON.parse(localStorage.getItem("shivam_offers_list") || "[]");
+                } catch (err) {}
+            }
+
+            const activeOffers = (offers || []).filter(o => o.is_active === 1 || o.is_active === "1" || o.is_active === true);
 
             if (activeOffers.length === 0) {
                 section.style.display = "none";
