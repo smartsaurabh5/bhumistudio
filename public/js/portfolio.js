@@ -24,6 +24,7 @@ const Portfolio = {
     },
 
     defaultItems: [
+        // Weddings
         {
             id: "port-wed-001",
             title: "Royal Indian Wedding Ceremony",
@@ -56,20 +57,32 @@ const Portfolio = {
         },
         {
             id: "port-wed-004",
+            title: "Grand Reception & Fireworks",
+            category: "wedding",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 0,
+            created_at: "2026-09-04 13:00:00"
+        },
+        {
+            id: "port-wed-005",
             title: "Cinematic Wedding Film Trailer",
             category: "wedding",
             media_type: "video",
-            url: "https://assets.mixkit.co/videos/preview/mixkit-bride-and-groom-kissing-under-the-veil-44365-large.mp4",
+            url: "https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4",
             thumbnail: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
             is_featured: 1,
             created_at: "2026-09-04 14:00:00"
         },
+
+        // Pre-Wedding
         {
             id: "port-pre-001",
-            title: "Romantic Sunset Pre-Wedding Glow",
+            title: "Romantic Sunset Couple Shoot",
             category: "pre-wedding",
             media_type: "image",
-            url: "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=1200&q=80",
+            url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80",
             thumbnail: "",
             is_featured: 1,
             created_at: "2026-09-05 15:00:00"
@@ -79,21 +92,43 @@ const Portfolio = {
             title: "Heritage Palace Couple Story",
             category: "pre-wedding",
             media_type: "image",
-            url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80",
+            url: "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1200&q=80",
             thumbnail: "",
             is_featured: 0,
             created_at: "2026-09-06 16:00:00"
         },
         {
             id: "port-pre-003",
+            title: "Lakeside Couple Story",
+            category: "pre-wedding",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 1,
+            created_at: "2026-09-07 16:30:00"
+        },
+        {
+            id: "port-pre-004",
+            title: "Outdoor Romantic Pre-Wedding",
+            category: "pre-wedding",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 0,
+            created_at: "2026-09-07 17:00:00"
+        },
+        {
+            id: "port-pre-005",
             title: "Pre-Wedding Romantic Teaser Film",
             category: "pre-wedding",
             media_type: "video",
-            url: "https://assets.mixkit.co/videos/preview/mixkit-young-couple-walking-in-a-forest-43223-large.mp4",
-            thumbnail: "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&w=600&q=80",
+            url: "https://videos.pexels.com/video-files/3249935/3249935-sd_640_360_25fps.mp4",
+            thumbnail: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80",
             is_featured: 1,
-            created_at: "2026-09-07 17:00:00"
+            created_at: "2026-09-07 17:30:00"
         },
+
+        // Maternity
         {
             id: "port-mat-001",
             title: "Maternity Golden Glow",
@@ -115,11 +150,23 @@ const Portfolio = {
             created_at: "2026-09-09 19:00:00"
         },
         {
+            id: "port-mat-003",
+            title: "Pure Motherhood Moments",
+            category: "maternity",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 1,
+            created_at: "2026-09-09 20:00:00"
+        },
+
+        // Baby
+        {
             id: "port-baby-001",
             title: "Newborn Sweet Dreams & Props",
             category: "baby",
             media_type: "image",
-            url: "https://images.unsplash.com/photo-1519689680058-324335c77ebe?auto=format&fit=crop&w=1200&q=80",
+            url: "https://images.unsplash.com/photo-1546015720-b8b30df5aa27?auto=format&fit=crop&w=1200&q=80",
             thumbnail: "",
             is_featured: 1,
             created_at: "2026-09-10 20:00:00"
@@ -134,6 +181,28 @@ const Portfolio = {
             is_featured: 0,
             created_at: "2026-09-11 21:00:00"
         },
+        {
+            id: "port-baby-003",
+            title: "Baby Studio Cute Expressions",
+            category: "baby",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 1,
+            created_at: "2026-09-11 21:30:00"
+        },
+        {
+            id: "port-baby-004",
+            title: "Little Prince Baby Portrait",
+            category: "baby",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 0,
+            created_at: "2026-09-11 22:00:00"
+        },
+
+        // Events
         {
             id: "port-eve-001",
             title: "Grand Haldi & Sangeet Celebration",
@@ -155,6 +224,18 @@ const Portfolio = {
             created_at: "2026-09-13 23:00:00"
         },
         {
+            id: "port-eve-003",
+            title: "Cultural Celebration & Festival",
+            category: "event",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 1,
+            created_at: "2026-09-13 23:30:00"
+        },
+
+        // Drone
+        {
             id: "port-drn-001",
             title: "Aerial View of Royal Wedding Venue",
             category: "drone",
@@ -166,14 +247,26 @@ const Portfolio = {
         },
         {
             id: "port-drn-002",
-            title: "Aerial Beach Resort Drone Shoot",
+            title: "Aerial Drone Sunset Panorama",
+            category: "drone",
+            media_type: "image",
+            url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80",
+            thumbnail: "",
+            is_featured: 0,
+            created_at: "2026-09-14 11:00:00"
+        },
+        {
+            id: "port-drn-003",
+            title: "Scenic Nature Drone Flight",
             category: "drone",
             media_type: "video",
-            url: "https://assets.mixkit.co/videos/preview/mixkit-top-aerial-view-of-a-sandy-beach-with-sea-waves-44161-large.mp4",
+            url: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
             thumbnail: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
             is_featured: 1,
             created_at: "2026-09-15 11:00:00"
         },
+
+        // Product
         {
             id: "port-prd-001",
             title: "Luxury Perfume & Brand Commercial",
@@ -198,10 +291,10 @@ const Portfolio = {
 
     async loadGallery() {
         try {
-            // 1. Fetch from Firebase Realtime Cloud Database (Global sync across all devices)
-            let cloudItems = [];
+            // 1. Fetch directly from Firebase Realtime Cloud Database (Single Global Source of Truth)
+            let cloudItems = null;
             try {
-                cloudItems = (await API.cloud.getPortfolio()) || [];
+                cloudItems = await API.cloud.getPortfolio();
             } catch (err) {
                 console.warn("Cloud DB portfolio fetch note:", err.message);
             }
@@ -212,25 +305,22 @@ const Portfolio = {
                 apiItems = (await API.get("/api/portfolio")) || [];
             } catch (e) {}
 
-            // 3. Fetch from localStorage cache
-            let localItems = [];
-            try {
-                localItems = JSON.parse(localStorage.getItem("shivam_portfolio_items") || "[]");
-            } catch (e) {}
-
-            // Merge items: Default items -> local -> API -> Cloud (cloud takes priority)
-            const map = new Map();
-            if (this.defaultItems) {
-                this.defaultItems.forEach(item => item && item.id && map.set(item.id, item));
-            }
-            localItems.forEach(item => item && item.id && map.set(item.id, item));
-            apiItems.forEach(item => item && item.id && map.set(item.id, item));
-            cloudItems.forEach(item => item && item.id && map.set(item.id, item));
-
-            this.items = Array.from(map.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
-
-            if (this.items.length === 0 && this.defaultItems) {
-                this.items = this.defaultItems;
+            // Determine active items
+            if (cloudItems && Array.isArray(cloudItems)) {
+                if (cloudItems.length > 0) {
+                    this.items = cloudItems.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+                } else {
+                    // Cloud DB is empty
+                    this.items = this.defaultItems || [];
+                }
+            } else if (apiItems && apiItems.length > 0) {
+                this.items = apiItems.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+            } else {
+                let localItems = [];
+                try {
+                    localItems = JSON.parse(localStorage.getItem("shivam_portfolio_items") || "[]");
+                } catch (e) {}
+                this.items = (localItems && localItems.length > 0) ? localItems : (this.defaultItems || []);
             }
 
             // Cache to local storage
@@ -243,8 +333,8 @@ const Portfolio = {
             this.renderAdminPortfolioList();
         } catch (error) {
             console.error("Failed to load portfolio items:", error);
-            if (this.defaultItems && this.defaultItems.length > 0) {
-                this.items = this.defaultItems;
+            if (!this.items || this.items.length === 0) {
+                this.items = this.defaultItems || [];
                 this.renderHighlights();
                 this.renderGalleryGrid();
                 this.renderAdminPortfolioList();
@@ -292,15 +382,16 @@ const Portfolio = {
             ? `<div class="video-play-icon"><i class="fa-solid fa-play"></i></div>` 
             : "";
             
-        const previewUrl = item.media_type === "video" ? (item.thumbnail || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80") : item.url;
+        const fallbackThumb = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80";
+        const previewUrl = item.media_type === "video" ? (item.thumbnail || fallbackThumb) : item.url;
 
         return `
             <div class="gallery-card" data-id="${item.id}" data-context="${context}">
-                <img src="${previewUrl}" alt="${item.title}" loading="lazy">
+                <img src="${previewUrl}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackThumb}';">
                 ${mediaTag}
                 <div class="gallery-overlay">
                     <div class="gallery-info">
-                        <span>${item.category.toUpperCase()}</span>
+                        <span>${(item.category || '').toUpperCase()}</span>
                         <h4>${item.title}</h4>
                     </div>
                 </div>
@@ -399,7 +490,7 @@ const Portfolio = {
             videoTag.src = item.url;
             videoTag.classList.remove("hidden");
             videoTag.load();
-            videoTag.play();
+            videoTag.play().catch(() => {});
         } else {
             imgTag.src = item.url;
             imgTag.classList.remove("hidden");
@@ -441,14 +532,16 @@ const Portfolio = {
             return;
         }
 
+        const fallbackThumb = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=100&q=80";
+
         container.innerHTML = this.items.map(item => `
-            <div class="admin-portfolio-item">
-                <img src="${item.media_type === 'video' ? (item.thumbnail || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=100&q=80') : item.url}" alt="${item.title}">
+            <div class="admin-portfolio-item" id="admin-port-card-${item.id}">
+                <img src="${item.media_type === 'video' ? (item.thumbnail || fallbackThumb) : item.url}" alt="${item.title}" onerror="this.onerror=null; this.src='${fallbackThumb}';">
                 <div class="admin-port-info">
                     <h5>${item.title}</h5>
                     <p>Category: <strong>${item.category}</strong> | Type: <strong>${item.media_type}</strong> ${item.is_featured === 1 ? ' | <span class="text-gold bold">★ Featured</span>' : ''}</p>
                 </div>
-                <button class="btn btn-outline-sm text-danger" onclick="Portfolio.deleteItem('${item.id}')">
+                <button class="btn btn-outline-sm text-danger" title="Delete from all devices" onclick="Portfolio.deleteItem('${item.id}')">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
@@ -456,28 +549,33 @@ const Portfolio = {
     },
 
     async deleteItem(id) {
-        if (!confirm("Are you sure you want to delete this portfolio item? This action will remove it from all devices.")) return;
+        if (!confirm("Are you sure you want to delete this portfolio item? This action will remove it permanently across all devices.")) return;
 
         try {
             app.showLoader();
-            // 1. Delete from Firebase Cloud DB
+            
+            // 1. Delete from Firebase Realtime Cloud DB
             await API.cloud.deletePortfolioItem(id);
 
-            // 2. Try backend API
+            // 2. Delete from backend API if available
             try {
                 await API.delete(`/api/portfolio/${id}`);
             } catch (error) {}
 
-            // 3. Remove from local storage
+            // 3. Immediately update local memory and localStorage
+            this.items = this.items.filter(item => String(item.id) !== String(id));
             try {
-                let localItems = JSON.parse(localStorage.getItem("shivam_portfolio_items") || "[]");
-                localItems = localItems.filter(item => item.id !== id);
-                localStorage.setItem("shivam_portfolio_items", JSON.stringify(localItems));
+                localStorage.setItem("shivam_portfolio_items", JSON.stringify(this.items));
             } catch (e) {}
 
+            // 4. Update UI immediately
+            this.renderHighlights();
+            this.renderGalleryGrid();
+            this.renderAdminPortfolioList();
+
             app.showToast("Portfolio item deleted successfully across all devices!", "success");
-            await this.loadGallery();
         } catch (error) {
+            console.error("Failed to delete portfolio item:", error);
             app.showToast(error.message, "error");
         } finally {
             app.hideLoader();
